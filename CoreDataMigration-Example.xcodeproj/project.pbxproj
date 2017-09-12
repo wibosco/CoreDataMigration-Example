@@ -23,6 +23,9 @@
 		431DCEDF1F6842FF00CF6316 /* CoreDataMigration_Example_1.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEDA1F683E0100CF6316 /* CoreDataMigration_Example_1.sqlite */; };
 		431DCEE01F68430200CF6316 /* CoreDataMigration_Example_2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEDB1F683E0100CF6316 /* CoreDataMigration_Example_2.sqlite */; };
 		431DCEE11F68430400CF6316 /* CoreDataMigration_Example_3.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEDC1F683E0100CF6316 /* CoreDataMigration_Example_3.sqlite */; };
+		431DCEE31F6843F800CF6316 /* CoreDataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEE21F6843F800CF6316 /* CoreDataMigratorTests.swift */; };
+		431DCEE61F68479700CF6316 /* CoreDataMigration_Example_WAL.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEE51F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite */; };
+		431DCEE71F68479A00CF6316 /* CoreDataMigration_Example_WAL.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEE41F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite-wal */; };
 		43370DB01F66E7A6006188EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370D751F66E74A006188EC /* AppDelegate.swift */; };
 		43370DB31F66E830006188EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D781F66E74A006188EC /* LaunchScreen.storyboard */; };
 		43370DB41F66E832006188EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D7A1F66E74A006188EC /* Main.storyboard */; };
@@ -62,6 +65,9 @@
 		431DCEDB1F683E0100CF6316 /* CoreDataMigration_Example_2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreDataMigration_Example_2.sqlite; sourceTree = "<group>"; };
 		431DCEDC1F683E0100CF6316 /* CoreDataMigration_Example_3.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreDataMigration_Example_3.sqlite; sourceTree = "<group>"; };
 		431DCEDD1F683E2B00CF6316 /* CoreDataMigrationVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationVersionTests.swift; sourceTree = "<group>"; };
+		431DCEE21F6843F800CF6316 /* CoreDataMigratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigratorTests.swift; sourceTree = "<group>"; };
+		431DCEE41F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CoreDataMigration_Example_WAL.sqlite-wal"; sourceTree = "<group>"; };
+		431DCEE51F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreDataMigration_Example_WAL.sqlite; sourceTree = "<group>"; };
 		43370D731F66E74A006188EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43370D751F66E74A006188EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43370D761F66E74A006188EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -153,6 +159,7 @@
 			children = (
 				431DCED91F683E0100CF6316 /* Models */,
 				431DCEDD1F683E2B00CF6316 /* CoreDataMigrationVersionTests.swift */,
+				431DCEE21F6843F800CF6316 /* CoreDataMigratorTests.swift */,
 			);
 			path = Migration;
 			sourceTree = "<group>";
@@ -163,6 +170,8 @@
 				431DCEDA1F683E0100CF6316 /* CoreDataMigration_Example_1.sqlite */,
 				431DCEDB1F683E0100CF6316 /* CoreDataMigration_Example_2.sqlite */,
 				431DCEDC1F683E0100CF6316 /* CoreDataMigration_Example_3.sqlite */,
+				431DCEE51F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite */,
+				431DCEE41F68474200CF6316 /* CoreDataMigration_Example_WAL.sqlite-wal */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -382,8 +391,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				431DCEE11F68430400CF6316 /* CoreDataMigration_Example_3.sqlite in Resources */,
+				431DCEE71F68479A00CF6316 /* CoreDataMigration_Example_WAL.sqlite-wal in Resources */,
 				431DCEDF1F6842FF00CF6316 /* CoreDataMigration_Example_1.sqlite in Resources */,
 				431DCEE01F68430200CF6316 /* CoreDataMigration_Example_2.sqlite in Resources */,
+				431DCEE61F68479700CF6316 /* CoreDataMigration_Example_WAL.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				431DCEDE1F683E2B00CF6316 /* CoreDataMigrationVersionTests.swift in Sources */,
+				431DCEE31F6843F800CF6316 /* CoreDataMigratorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

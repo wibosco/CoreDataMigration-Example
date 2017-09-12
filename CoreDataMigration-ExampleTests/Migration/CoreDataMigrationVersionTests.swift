@@ -8,9 +8,12 @@
 
 import XCTest
 import CoreData
+
 @testable import CoreDataMigration_Example
 
 class CoreDataMigrationVersionTests: XCTestCase {
+    
+    // MARK: - CustomClasses
     
     class CoreDataMigrationModelSpy: CoreDataMigrationModel {
         
@@ -29,6 +32,8 @@ class CoreDataMigrationVersionTests: XCTestCase {
             return NSMappingModel()
         }
     }
+    
+    // MARK: - Setup
     
     override func setUp() {
         super.setUp()
