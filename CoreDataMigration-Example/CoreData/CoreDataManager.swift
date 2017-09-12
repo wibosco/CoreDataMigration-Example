@@ -12,10 +12,11 @@ import CoreData
 class CoreDataManager {
     
     let fileManager: FileManager
+    let migrator: CoreDataMigrator
     
     lazy var persistentContainer: NSPersistentContainer! = {
         let persistentContainer = NSPersistentContainer(name: "CoreDataMigration_Example")
-
+        
         let url = self.fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).last!.appendingPathComponent("CoreDataMigration_Example.sqlite")
         let description = NSPersistentStoreDescription(url: url)
         description.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
@@ -45,29 +46,51 @@ class CoreDataManager {
     
     // MARK: - Init
     
-    init(fileManager: FileManager = FileManager.default) {
+    init(fileManager: FileManager = FileManager.default, migrator: CoreDataMigrator = CoreDataMigrator()) {
         self.fileManager = fileManager
+        self.migrator = migrator
     }
     
     // MARK: - SetUp
-
+    
     func setup(completion: @escaping () -> Void) {
         loadPersistentStore {
-            DispatchQueue.main.async {
-                completion()
-            }
+            completion()
         }
     }
     
     // MARK: - Loading
     
     private func loadPersistentStore(completion: @escaping () -> Void) {
-        self.persistentContainer.loadPersistentStores { description, error in
-            guard error == nil else {
-                fatalError("was unable to load store")
+//        let storeLocation = persistentContainer.persistentStoreDescriptions[0].url!
+//        migrator.forceWALCheckpointing(storeLocation: storeLocation)
+        
+        migrateStoreIfNeeded {
+            self.persistentContainer.loadPersistentStores { description, error in
+                guard error == nil else {
+                    fatalError("was unable to load store")
+                }
+                
+                completion()
             }
-
-            completion()
+        }
+    }
+    
+    private func migrateStoreIfNeeded(completion: @escaping () -> Void) {
+        let storeLocation = persistentContainer.persistentStoreDescriptions[0].url!
+        if migrator.requiresMigration(storeLocation: storeLocation) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.migrator.migrateStore(storeLocation: storeLocation)
+                
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                completion()
+            }
         }
     }
 }
+

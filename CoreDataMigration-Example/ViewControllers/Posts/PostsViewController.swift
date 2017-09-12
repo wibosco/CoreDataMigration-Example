@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  PostsViewController.swift
 //  CoreDataMigration-Example
 //
 //  Created by William Boles on 11/09/2017.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewController: UITableViewController {
+class PostsViewController: UITableViewController {
 
     var posts = [Post]()
     
@@ -24,6 +24,12 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        for _ in 0..<1000 {
+//            addPost {
+//                print("post created")
+//            }
+//        }
         
         tableView.rowHeight = 80.0
     }
@@ -52,7 +58,7 @@ class ViewController: UITableViewController {
                 let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
                 post.postID = UUID().uuidString
                 post.date = Date()
-                post.color = UIColor.random.hexString
+                post.hexColor = UIColor.random.hexString
                 
                 try! context.save()
                 
@@ -89,7 +95,7 @@ class ViewController: UITableViewController {
         
         cell.postIDLabel.text = post.postID
         cell.dateLabel.text = dateFormatter.string(from: post.date!)
-        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.color!)
+        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!)
         
         return cell
     }

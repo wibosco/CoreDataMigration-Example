@@ -14,11 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    // MARK: - AppLifecycle
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         CoreDataManager.shared.setup {
-            //TODO: Handle
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // just for example purposes
+                self.presentMainUI()
+            }
         }
         
         return true
@@ -45,6 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+    }
+    
+    // MARK: - Main
+    
+    func presentMainUI() {
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        window?.rootViewController = mainStoryboard.instantiateInitialViewController()
     }
 }
 

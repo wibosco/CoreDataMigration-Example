@@ -7,12 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4316DCBD1F66F80E00F9359F /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4316DCBC1F66F80E00F9359F /* PostTableViewCell.swift */; };
+		431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEAA1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodeld */; };
+		431DCEBE1F67F18100CF6316 /* CoreDataMigrationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEB01F67EE2600CF6316 /* CoreDataMigrationModel.swift */; };
+		431DCEBF1F67F18100CF6316 /* CoreDataMigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEB11F67EE2600CF6316 /* CoreDataMigrationStep.swift */; };
+		431DCEC01F67F18100CF6316 /* CoreDataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEB21F67EE2600CF6316 /* CoreDataMigrator.swift */; };
+		431DCEC21F67F1B100CF6316 /* Migration_1_to_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEC11F67F1B100CF6316 /* Migration_1_to_2.xcmappingmodel */; };
+		431DCEC31F67F1FC00CF6316 /* NSPersistentStoreCoordinator+Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEBD1F67F07100CF6316 /* NSPersistentStoreCoordinator+Move.swift */; };
+		431DCEC51F67F80B00CF6316 /* AppLoading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 431DCEC41F67F80B00CF6316 /* AppLoading.storyboard */; };
+		431DCECB1F67F93000CF6316 /* AppLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCECA1F67F93000CF6316 /* AppLoadingViewController.swift */; };
+		431DCECC1F67FE0500CF6316 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEC91F67F91C00CF6316 /* PostsViewController.swift */; };
+		431DCECD1F67FE0800CF6316 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEC81F67F91C00CF6316 /* PostTableViewCell.swift */; };
 		43370DB01F66E7A6006188EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370D751F66E74A006188EC /* AppDelegate.swift */; };
-		43370DB21F66E7A6006188EC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370D7D1F66E74A006188EC /* ViewController.swift */; };
 		43370DB31F66E830006188EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D781F66E74A006188EC /* LaunchScreen.storyboard */; };
 		43370DB41F66E832006188EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D7A1F66E74A006188EC /* Main.storyboard */; };
-		43370DBD1F66F0DC006188EC /* CoreDataMigration_Example.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 43370DBC1F66F0D7006188EC /* CoreDataMigration_Example.xcdatamodel */; };
 		43370DBE1F66F0DF006188EC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370DBB1F66F0C0006188EC /* CoreDataManager.swift */; };
 		4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */; };
 		4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4EF1F67E10700027D11 /* UIColor+Random.swift */; };
@@ -31,15 +38,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4316DCBC1F66F80E00F9359F /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		431DCEAB1F67EC7100CF6316 /* CoreDataMigration_Example 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataMigration_Example 2.xcdatamodel"; sourceTree = "<group>"; };
+		431DCEAC1F67EC7100CF6316 /* CoreDataMigration_Example 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataMigration_Example 3.xcdatamodel"; sourceTree = "<group>"; };
+		431DCEAD1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataMigration_Example.xcdatamodel; sourceTree = "<group>"; };
+		431DCEB01F67EE2600CF6316 /* CoreDataMigrationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationModel.swift; sourceTree = "<group>"; };
+		431DCEB11F67EE2600CF6316 /* CoreDataMigrationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationStep.swift; sourceTree = "<group>"; };
+		431DCEB21F67EE2600CF6316 /* CoreDataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrator.swift; sourceTree = "<group>"; };
+		431DCEBD1F67F07100CF6316 /* NSPersistentStoreCoordinator+Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentStoreCoordinator+Move.swift"; sourceTree = "<group>"; };
+		431DCEC11F67F1B100CF6316 /* Migration_1_to_2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Migration_1_to_2.xcmappingmodel; sourceTree = "<group>"; };
+		431DCEC41F67F80B00CF6316 /* AppLoading.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AppLoading.storyboard; sourceTree = "<group>"; };
+		431DCEC81F67F91C00CF6316 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		431DCEC91F67F91C00CF6316 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		431DCECA1F67F93000CF6316 /* AppLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoadingViewController.swift; sourceTree = "<group>"; };
 		43370D731F66E74A006188EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43370D751F66E74A006188EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43370D761F66E74A006188EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43370D791F66E74A006188EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43370D7B1F66E74A006188EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		43370D7D1F66E74A006188EC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		43370DBB1F66F0C0006188EC /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		43370DBC1F66F0D7006188EC /* CoreDataMigration_Example.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataMigration_Example.xcdatamodel; sourceTree = "<group>"; };
 		4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		4345D4EF1F67E10700027D11 /* UIColor+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
 		4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Random.swift"; sourceTree = "<group>"; };
@@ -67,6 +83,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		431DCEAF1F67EE2600CF6316 /* Migration */ = {
+			isa = PBXGroup;
+			children = (
+				431DCEB01F67EE2600CF6316 /* CoreDataMigrationModel.swift */,
+				431DCEB11F67EE2600CF6316 /* CoreDataMigrationStep.swift */,
+				431DCEB21F67EE2600CF6316 /* CoreDataMigrator.swift */,
+				431DCEB31F67EE2600CF6316 /* Mappings */,
+			);
+			path = Migration;
+			sourceTree = "<group>";
+		};
+		431DCEB31F67EE2600CF6316 /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
+				431DCEC11F67F1B100CF6316 /* Migration_1_to_2.xcmappingmodel */,
+			);
+			path = Mappings;
+			sourceTree = "<group>";
+		};
+		431DCEBC1F67F07100CF6316 /* NSPersistentStoreCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				431DCEBD1F67F07100CF6316 /* NSPersistentStoreCoordinator+Move.swift */,
+			);
+			path = NSPersistentStoreCoordinator;
+			sourceTree = "<group>";
+		};
+		431DCEC61F67F91C00CF6316 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				431DCECA1F67F93000CF6316 /* AppLoadingViewController.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		431DCEC71F67F91C00CF6316 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				431DCEC81F67F91C00CF6316 /* PostTableViewCell.swift */,
+				431DCEC91F67F91C00CF6316 /* PostsViewController.swift */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
 		43370D721F66E74A006188EC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +147,7 @@
 		43370D771F66E74A006188EC /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				431DCEC41F67F80B00CF6316 /* AppLoading.storyboard */,
 				43370D781F66E74A006188EC /* LaunchScreen.storyboard */,
 				43370D7A1F66E74A006188EC /* Main.storyboard */,
 			);
@@ -96,8 +157,8 @@
 		43370D7C1F66E74A006188EC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				43370D7D1F66E74A006188EC /* ViewController.swift */,
-				4316DCBC1F66F80E00F9359F /* PostTableViewCell.swift */,
+				431DCEC61F67F91C00CF6316 /* Loading */,
+				431DCEC71F67F91C00CF6316 /* Posts */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -106,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				43370DBB1F66F0C0006188EC /* CoreDataManager.swift */,
+				431DCEAF1F67EE2600CF6316 /* Migration */,
 				43370DB91F66F0C0006188EC /* Model */,
 			);
 			path = CoreData;
@@ -114,7 +176,7 @@
 		43370DB91F66F0C0006188EC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				43370DBC1F66F0D7006188EC /* CoreDataMigration_Example.xcdatamodel */,
+				431DCEAA1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -123,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				4345D4F31F67E1FC00027D11 /* CGFloat */,
+				431DCEBC1F67F07100CF6316 /* NSPersistentStoreCoordinator */,
 				4345D4EC1F67E0DD00027D11 /* UIColor */,
 			);
 			path = Extensions;
@@ -268,6 +331,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				431DCEC51F67F80B00CF6316 /* AppLoading.storyboard in Resources */,
 				43370DB31F66E830006188EC /* LaunchScreen.storyboard in Resources */,
 				43370DB41F66E832006188EC /* Main.storyboard in Resources */,
 			);
@@ -287,14 +351,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				431DCEBE1F67F18100CF6316 /* CoreDataMigrationModel.swift in Sources */,
 				43370DB01F66E7A6006188EC /* AppDelegate.swift in Sources */,
-				43370DBD1F66F0DC006188EC /* CoreDataMigration_Example.xcdatamodel in Sources */,
-				4316DCBD1F66F80E00F9359F /* PostTableViewCell.swift in Sources */,
+				431DCEC01F67F18100CF6316 /* CoreDataMigrator.swift in Sources */,
+				431DCECB1F67F93000CF6316 /* AppLoadingViewController.swift in Sources */,
 				4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */,
 				4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */,
 				4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */,
+				431DCECD1F67FE0800CF6316 /* PostTableViewCell.swift in Sources */,
+				431DCECC1F67FE0500CF6316 /* PostsViewController.swift in Sources */,
 				43370DBE1F66F0DF006188EC /* CoreDataManager.swift in Sources */,
-				43370DB21F66E7A6006188EC /* ViewController.swift in Sources */,
+				431DCEBF1F67F18100CF6316 /* CoreDataMigrationStep.swift in Sources */,
+				431DCEC31F67F1FC00CF6316 /* NSPersistentStoreCoordinator+Move.swift in Sources */,
+				431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */,
+				431DCEC21F67F1B100CF6316 /* Migration_1_to_2.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +606,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		431DCEAA1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				431DCEAB1F67EC7100CF6316 /* CoreDataMigration_Example 2.xcdatamodel */,
+				431DCEAC1F67EC7100CF6316 /* CoreDataMigration_Example 3.xcdatamodel */,
+				431DCEAD1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodel */,
+			);
+			currentVersion = 431DCEAB1F67EC7100CF6316 /* CoreDataMigration_Example 2.xcdatamodel */;
+			path = CoreDataMigration_Example.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 43AB8ADD1F66E6A5003153B3 /* Project object */;
 }

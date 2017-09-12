@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +12,7 @@
         <!--Root View Controller-->
         <scene sceneID="FXI-iW-yPe">
             <objects>
-                <tableViewController id="aaS-4r-zql" customClass="ViewController" customModule="CoreDataMigration_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="aaS-4r-zql" customClass="PostsViewController" customModule="CoreDataMigration_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qal-37-rBK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +94,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="2vk-Y5-WEZ">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="jFW-h7-OCU">
                             <connections>
-                                <action selector="addButtonPressed:" destination="aaS-4r-zql" id="UgE-zL-XFP"/>
+                                <action selector="addButtonPressed:" destination="aaS-4r-zql" id="wec-6d-3el"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
