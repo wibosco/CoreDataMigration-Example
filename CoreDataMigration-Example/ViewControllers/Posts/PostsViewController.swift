@@ -25,12 +25,6 @@ class PostsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        for _ in 0..<1000 {
-//            addPost {
-//                print("post created")
-//            }
-//        }
-        
         tableView.rowHeight = 80.0
     }
     
@@ -58,7 +52,12 @@ class PostsViewController: UITableViewController {
                 let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
                 post.postID = UUID().uuidString
                 post.date = Date()
-                post.hexColor = UIColor.random.hexString
+                
+                let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: context) as! Color
+                color.colorID = UUID().uuidString
+                color.hex = UIColor.random.hexString
+                
+                post.color = color
                 
                 try! context.save()
                 
@@ -95,7 +94,7 @@ class PostsViewController: UITableViewController {
         
         cell.postIDLabel.text = post.postID
         cell.dateLabel.text = dateFormatter.string(from: post.date!)
-        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!)
+        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.color!.hex!)
         
         return cell
     }

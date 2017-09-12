@@ -12,6 +12,8 @@ import CoreData
 enum CoreDataVersion: Int {
     case version1 = 1
     case version2
+    case version3
+    case version4
     
     // MARK: - Accessors
     
@@ -80,6 +82,10 @@ class CoreDataMigrationModel {
         case .version1:
             return CoreDataMigrationModel(version: .version2)
         case .version2:
+            return CoreDataMigrationModel(version: .version3)
+        case .version3:
+            return CoreDataMigrationModel(version: .version4)
+        case .version4:
             return nil
         }
     }
@@ -114,8 +120,8 @@ class CoreDataMigrationModel {
             return nil
         }
         
-        switch self.version {
-        case .version1: //manual mapped versions
+        switch version {
+        case .version1, .version2: //manual mapped versions
             guard let mapping = mappingModel(to: nextVersion) else {
                 return nil
             }

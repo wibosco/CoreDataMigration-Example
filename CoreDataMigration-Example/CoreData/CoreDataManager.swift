@@ -62,9 +62,6 @@ class CoreDataManager {
     // MARK: - Loading
     
     private func loadPersistentStore(completion: @escaping () -> Void) {
-//        let storeLocation = persistentContainer.persistentStoreDescriptions[0].url!
-//        migrator.forceWALCheckpointing(storeLocation: storeLocation)
-        
         migrateStoreIfNeeded {
             self.persistentContainer.loadPersistentStores { description, error in
                 guard error == nil else {

@@ -7,11 +7,12 @@
     </entity>
     <entity name="Post" representedClassName="Post" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hide" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="color" maxCount="1" deletionRule="Nullify" destinationEntity="Color" inverseName="post" inverseEntity="Color" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Post" positionX="-63" positionY="-18" width="128" height="90"/>
         <element name="Color" positionX="-63" positionY="9" width="128" height="90"/>
+        <element name="Post" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>
 </model>
