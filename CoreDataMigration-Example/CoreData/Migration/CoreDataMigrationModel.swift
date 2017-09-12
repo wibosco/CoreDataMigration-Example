@@ -122,7 +122,7 @@ class CoreDataMigrationModel {
         
         switch version {
         case .version1, .version2: //manual mapped versions
-            guard let mapping = mappingModel(to: nextVersion) else {
+            guard let mapping = manualMappingModel(to: nextVersion) else {
                 return nil
             }
             
@@ -140,7 +140,7 @@ class CoreDataMigrationModel {
         }
     }
     
-    func mappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
+    func manualMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
         let sourceModel = managedObjectModel()
         let destinationModel = nextVersion.managedObjectModel()
         guard let mapping = NSMappingModel(from: [modelBundle], forSourceModel: sourceModel, destinationModel: destinationModel) else {

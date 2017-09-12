@@ -36,7 +36,7 @@ class CoreDataMigrator {
         return !currentMigrationModel.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
     }
     
-    // MARK: - Migrate
+    // MARK: - Migration
     
     func migrateStore(storeLocation: URL) {
         migrateStore(from: storeLocation, to: storeLocation, targetVersion: CoreDataMigrationModel.current)
@@ -73,7 +73,7 @@ class CoreDataMigrator {
         }
     }
     
-    // MARK: - Setup
+    // MARK: - WAL
 
     func forceWALCheckpointing(storeLocation: URL) {
         let metadata = try! NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeLocation, options: nil)
