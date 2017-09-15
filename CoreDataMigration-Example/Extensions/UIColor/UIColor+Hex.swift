@@ -10,6 +10,8 @@ import UIKit
 
 extension UIColor {
     
+    // MARK: - Hex
+    
     var hexString: String {
         let components = self.cgColor.components
         
