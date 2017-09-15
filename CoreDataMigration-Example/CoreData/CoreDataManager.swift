@@ -11,17 +11,12 @@ import CoreData
 
 class CoreDataManager {
     
-    let fileManager: FileManager
     let migrator: CoreDataMigrator
     
     lazy var persistentContainer: NSPersistentContainer! = {
         let persistentContainer = NSPersistentContainer(name: "CoreDataMigration_Example")
-        
-        let url = self.fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).last!.appendingPathComponent("CoreDataMigration_Example.sqlite")
-        let description = NSPersistentStoreDescription(url: url)
-        description.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
-        
-        persistentContainer.persistentStoreDescriptions = [description]
+        let description = persistentContainer.persistentStoreDescriptions.first
+        description?.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
         
         return persistentContainer
     }()
@@ -46,8 +41,7 @@ class CoreDataManager {
     
     // MARK: - Init
     
-    init(fileManager: FileManager = FileManager.default, migrator: CoreDataMigrator = CoreDataMigrator()) {
-        self.fileManager = fileManager
+    init(migrator: CoreDataMigrator = CoreDataMigrator()) {
         self.migrator = migrator
     }
     
@@ -74,19 +68,20 @@ class CoreDataManager {
     }
     
     private func migrateStoreIfNeeded(completion: @escaping () -> Void) {
-        let storeLocation = persistentContainer.persistentStoreDescriptions[0].url!
-        if migrator.requiresMigration(storeLocation: storeLocation) {
+        guard let description = persistentContainer.persistentStoreDescriptions.first, let storeURL = description.url else {
+            fatalError("persistentContainer not set up properly")
+        }
+        
+        if migrator.requiresMigration(storeURL: storeURL) {
             DispatchQueue.global(qos: .userInitiated).async {
-                self.migrator.migrateStore(storeLocation: storeLocation)
+                self.migrator.migrateStore(storeURL: storeURL)
                 
                 DispatchQueue.main.async {
                     completion()
                 }
             }
         } else {
-            DispatchQueue.main.async {
-                completion()
-            }
+            completion()
         }
     }
 }

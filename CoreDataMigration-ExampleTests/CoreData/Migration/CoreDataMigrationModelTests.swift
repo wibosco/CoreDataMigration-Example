@@ -1,5 +1,5 @@
 //
-//  CoreDataMigrationVersionTests.swift
+//  CoreDataMigrationModelTests.swift
 //  CoreDataMigration-ExampleTests
 //
 //  Created by William Boles on 12/09/2017.
@@ -11,7 +11,7 @@ import CoreData
 
 @testable import CoreDataMigration_Example
 
-class CoreDataMigrationVersionTests: XCTestCase {
+class CoreDataMigrationModelTests: XCTestCase {
     
     // MARK: - CustomClasses
     
@@ -33,26 +33,14 @@ class CoreDataMigrationVersionTests: XCTestCase {
         }
     }
     
-    // MARK: - Setup
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     // MARK: - Source
     
     func test_sourceInit_validStoreURL() {
-        let storeURL = Bundle(for: CoreDataMigrationVersionTests.self).resourceURL!.appendingPathComponent("CoreDataMigration_Example_2.sqlite")
-        let coreDataMigrationVersion = CoreDataMigrationVersionSourceModel(storeURL: storeURL)
+        let storeURL = Bundle(for: CoreDataMigrationModelTests.self).resourceURL!.appendingPathComponent("CoreDataMigration_Example_2.sqlite")
+        let coreDataMigrationModel = CoreDataMigrationSourceModel(storeURL: storeURL)
         
-        XCTAssertNotNil(coreDataMigrationVersion)
-        XCTAssertEqual(coreDataMigrationVersion!.version.name, "CoreDataMigration_Example 2")
+        XCTAssertNotNil(coreDataMigrationModel)
+        XCTAssertEqual(coreDataMigrationModel!.version.name, "CoreDataMigration_Example 2")
     }
     
     // MARK: - Steps
@@ -63,31 +51,40 @@ class CoreDataMigrationVersionTests: XCTestCase {
         
         let steps = version2.migrationSteps(to: version3)
         
-        let step2to3 = steps.first
+        let firstStep = steps.first
         
-        let version2Model = version2.managedObjectModel()
-        let version3Model = version3.managedObjectModel()
+        let sourceModel = version2.managedObjectModel()
+        let destinationModel = version3.managedObjectModel()
         
         XCTAssertEqual(steps.count, 1)
-        XCTAssertEqual(step2to3?.source, version2Model)
-        XCTAssertEqual(step2to3?.destination, version3Model)
+        XCTAssertEqual(firstStep?.source, sourceModel)
+        XCTAssertEqual(firstStep?.destination, destinationModel)
     }
     
     func test_migrationSteps_multipleSteps() {
         let version1 = CoreDataMigrationModel(version: .version1)
+        let version2 = CoreDataMigrationModel(version: .version2)
         let version3 = CoreDataMigrationModel(version: .version3)
-        let version4 = CoreDataMigrationModel(version: .version4)
         
-        let steps = version1.migrationSteps(to: version4)
+        let steps = version1.migrationSteps(to: version3)
         
-        let step3to4 = steps.last
+        let lastStep = steps.last
         
-        let version3Model = version3.managedObjectModel()
-        let version4Model = version4.managedObjectModel()
+        let sourceModel = version2.managedObjectModel()
+        let destinationModel = version3.managedObjectModel()
         
-        XCTAssertEqual(steps.count, 3)
-        XCTAssertEqual(step3to4?.source, version3Model)
-        XCTAssertEqual(step3to4?.destination, version4Model)
+        XCTAssertEqual(steps.count, 2)
+        XCTAssertEqual(lastStep?.source, sourceModel)
+        XCTAssertEqual(lastStep?.destination, destinationModel)
+    }
+    
+    func test_migrationSteps_toCurrent() {
+        let version1 = CoreDataMigrationModel(version: .version1)
+        let currentVersion = CoreDataMigrationModel.current
+        
+        let steps = version1.migrationSteps(to: currentVersion)
+        
+        XCTAssertEqual(steps.count, (CoreDataVersion.all.count - 1))
     }
     
     func test_migrationSteps_cannotMigrateToSelf() {
@@ -135,5 +132,16 @@ class CoreDataMigrationVersionTests: XCTestCase {
         
         XCTAssertNotNil(mappingModel)
         XCTAssertTrue(version.inferredMappingModelWasCalled)
+    }
+    
+    // MARK: - Current
+    
+    func test_current() {
+        let lastVersion = CoreDataVersion.all.first!
+        
+        let expectedModel = CoreDataMigrationModel(version: lastVersion)
+        let currentModel = CoreDataMigrationModel.current
+        
+        XCTAssertEqual(expectedModel.version, currentModel.version)
     }
 }

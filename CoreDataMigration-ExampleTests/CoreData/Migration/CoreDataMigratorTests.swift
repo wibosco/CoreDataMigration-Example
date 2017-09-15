@@ -13,7 +13,7 @@ import CoreData
 
 class CoreDataMigratorTests: XCTestCase {
     
-    func clearTmpDirectoryContents() {
+    static func clearTmpDirectoryContents() {
         let tmpDirectoryContents = try! FileManager.default.contentsOfDirectory(atPath: NSTemporaryDirectory())
         tmpDirectoryContents.forEach {
             let fileURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent($0)
@@ -21,7 +21,7 @@ class CoreDataMigratorTests: XCTestCase {
         }
     }
     
-    func moveFileFromBundleToTmpDirectory(fileName: String) -> URL {
+    static func moveFileFromBundleToTmpDirectory(fileName: String) -> URL {
         let destinationURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(fileName)
         let bundleURL = Bundle(for: CoreDataMigratorTests.self).resourceURL!.appendingPathComponent(fileName)
         try! FileManager.default.copyItem(at: bundleURL, to: destinationURL)
@@ -35,21 +35,25 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - Setup
     
-    override func setUp() {
+    override class func setUp() {
         super.setUp()
         clearTmpDirectoryContents()
+    }
+    
+    override func setUp() {
+        super.setUp()
         migrator = CoreDataMigrator()
     }
     
     override func tearDown() {
-        clearTmpDirectoryContents()
+        CoreDataMigratorTests.clearTmpDirectoryContents()
         super.tearDown()
     }
     
     // MARK: - SingleStepMigrations
     
     func test_individualStepMigration_1to2() {
-        let sourceURL = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+        let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         let targetURL = sourceURL
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
@@ -63,7 +67,7 @@ class CoreDataMigratorTests: XCTestCase {
     }
     
     func test_individualStepMigration_2to3() {
-        let sourceURL = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_2.sqlite")
+        let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_2.sqlite")
         let targetURL = sourceURL
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
@@ -77,7 +81,7 @@ class CoreDataMigratorTests: XCTestCase {
     }
     
     func test_individualStepMigration_3to4() {
-        let sourceURL = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
+        let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let targetURL = sourceURL
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
@@ -92,13 +96,13 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - MultipleStepMigrations
     
-    func test_multipleStepMigration_1to4() {
-        let sourceURL = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+    func test_multipleStepMigration_1toCurrent() {
+        let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         let targetURL = sourceURL
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
         
-        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version4))
+        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel.current)
         
         let modifiedDateAfterMigration = try! FileManager.default.attributesOfItem(atPath: targetURL.path)[FileAttributeKey.modificationDate] as! Date
         
@@ -109,18 +113,18 @@ class CoreDataMigratorTests: XCTestCase {
     // MARK: - MigrationRequired
     
     func test_requiresMigration_true() {
-        let storeLocation = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+        let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         
-        let requiresMigration = migrator.requiresMigration(storeLocation: storeLocation)
+        let requiresMigration = migrator.requiresMigration(storeURL: storeURL)
         
         XCTAssertTrue(requiresMigration)
     }
     
     func test_requiresMigration_false() {
-        let storeLocation = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
+        let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let migrationModel = CoreDataMigrationModel(version: .version3)
         
-        let requiresMigration = migrator.requiresMigration(storeLocation: storeLocation, currentMigrationModel: migrationModel)
+        let requiresMigration = migrator.requiresMigration(storeURL: storeURL, currentMigrationModel: migrationModel)
         
         XCTAssertFalse(requiresMigration)
     }
@@ -128,14 +132,14 @@ class CoreDataMigratorTests: XCTestCase {
     // MARK: - CheckPointing
     
     func test_forceWALTransactions_success() {
-        let storeLocation = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite")
-        let walLocation = self.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite-wal")
+        let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite")
+        let walLocation = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite-wal")
         
-        let sizeBeforeCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeLocation.path)[FileAttributeKey.size] as! NSNumber
+        let sizeBeforeCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
-        migrator.forceWALCheckpointing(storeLocation: storeLocation)
+        migrator.forceWALCheckpointing(storeURL: storeURL)
         
-        let sizeAfterCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeLocation.path)[FileAttributeKey.size] as! NSNumber
+        let sizeAfterCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
         XCTAssertFalse(FileManager.default.fileExists(atPath: walLocation.path))
         XCTAssertTrue(sizeAfterCheckPointing.doubleValue > sizeBeforeCheckPointing.doubleValue)

@@ -173,12 +173,14 @@ class CoreDataMigrationModel {
 
 // MARK: - Source
 
-class CoreDataMigrationVersionSourceModel: CoreDataMigrationModel {
+class CoreDataMigrationSourceModel: CoreDataMigrationModel {
     
     // MARK: - Init
     
     init?(storeURL: URL) {
-        let metadata = try! NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil)
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
+            return nil
+        }
         
         let migrationVersionModel = CoreDataMigrationModel.all.first {
             $0.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)

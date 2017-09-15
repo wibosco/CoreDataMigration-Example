@@ -46,8 +46,7 @@ class PostsViewController: UITableViewController {
     
     func addPost(completion: @escaping () -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let coreDataManager: CoreDataManager = CoreDataManager.shared
-            let context = coreDataManager.backgroundContext
+            let context = CoreDataManager.shared.backgroundContext
             context.performAndWait {
                 let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
                 post.postID = UUID().uuidString
