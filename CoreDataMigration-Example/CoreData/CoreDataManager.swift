@@ -59,7 +59,7 @@ class CoreDataManager {
         migrateStoreIfNeeded {
             self.persistentContainer.loadPersistentStores { description, error in
                 guard error == nil else {
-                    fatalError("was unable to load store")
+                    fatalError("was unable to load store \(error!)")
                 }
                 
                 completion()
@@ -68,8 +68,8 @@ class CoreDataManager {
     }
     
     private func migrateStoreIfNeeded(completion: @escaping () -> Void) {
-        guard let description = persistentContainer.persistentStoreDescriptions.first, let storeURL = description.url else {
-            fatalError("persistentContainer not set up properly")
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            fatalError("persistentContainer was not set up properly")
         }
         
         if migrator.requiresMigration(storeURL: storeURL) {

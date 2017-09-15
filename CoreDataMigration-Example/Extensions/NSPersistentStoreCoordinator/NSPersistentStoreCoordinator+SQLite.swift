@@ -21,6 +21,20 @@ extension NSPersistentStoreCoordinator {
         }
     }
     
+    // MARK: - Remove
+    
+    func removeStore(at storeURL: URL) {
+        guard let persistentStore = persistentStore(for: storeURL) else {
+            return
+        }
+        
+        do {
+            try remove(persistentStore)
+        } catch let error {
+            fatalError("failed to remove persistent store at \(storeURL), error: \(error)")
+        }
+    }
+    
     // MARK: - Replace
     
     static func replaceStore(at targetURL: URL, withStoreAt sourceURL: URL) {
@@ -36,5 +50,16 @@ extension NSPersistentStoreCoordinator {
     
     static func metadata(at storeURL: URL) -> [String : Any]?  {
         return try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil)
+    }
+    
+    // MARK: - Add
+    
+    func addPersistentStore(at storeURL: URL, options: [AnyHashable : Any]) -> NSPersistentStore {
+        do {
+            return try addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
+        } catch let error {
+            fatalError("failed to add persistent store to coordinator, error: \(error)")
+        }
+        
     }
 }

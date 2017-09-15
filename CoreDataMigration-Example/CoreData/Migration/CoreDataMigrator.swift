@@ -92,15 +92,11 @@ class CoreDataMigrator {
             return
         }
         
-        do {
-            let model = currentCoreDataStoreMigrationVersionModel.managedObjectModel()
-            let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-            
-            let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
-            try persistentStoreCoordinator.remove(persistentStoreCoordinator.persistentStore(for: storeURL)!)
-        } catch let error {
-            fatalError("failed when attempting to force WAL checkpointing, error: \(error)")
-        }
+        let model = currentCoreDataStoreMigrationVersionModel.managedObjectModel()
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
+        
+        let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
+        persistentStoreCoordinator.addPersistentStore(at: storeURL, options: options)
+        persistentStoreCoordinator.removeStore(at: storeURL)
     }
 }
