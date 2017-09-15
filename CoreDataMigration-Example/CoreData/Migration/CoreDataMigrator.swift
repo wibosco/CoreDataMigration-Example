@@ -28,7 +28,7 @@ class CoreDataMigrator {
     
     // MARK: - Check
     
-    func requiresMigration(storeURL: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
+    func requiresMigration(at storeURL: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
             return false
         }
@@ -38,7 +38,7 @@ class CoreDataMigrator {
     
     // MARK: - Migration
     
-    func migrateStore(storeURL: URL) {
+    func migrateStore(at storeURL: URL) {
         migrateStore(from: storeURL, to: storeURL, targetVersion: CoreDataMigrationModel.current)
     }
     
@@ -47,7 +47,7 @@ class CoreDataMigrator {
             fatalError("unknown store version at URL \(sourceURL)")
         }
         
-        forceWALCheckpointing(storeURL: sourceURL)
+        forceWALCheckpointingForStore(at: sourceURL)
         
         var currentURL = sourceURL
         let migrationSteps = sourceMigrationModel.migrationSteps(to: targetVersion)
@@ -79,7 +79,7 @@ class CoreDataMigrator {
     
     // MARK: - WAL
 
-    func forceWALCheckpointing(storeURL: URL) {
+    func forceWALCheckpointingForStore(at storeURL: URL) {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
             return
         }

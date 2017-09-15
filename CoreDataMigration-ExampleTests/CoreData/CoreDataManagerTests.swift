@@ -20,13 +20,13 @@ class CoreDataManagerTests: XCTestCase {
         
         var requiresMigrationToBeReturned = false
         
-        override func requiresMigration(storeURL: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
+        override func requiresMigration(at: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
             requiresMigrationWasCalled = true
             
             return requiresMigrationToBeReturned
         }
         
-        override func migrateStore(storeURL: URL) {
+        override func migrateStore(at: URL) {
             migrateStoreWasCalled = true
         }
     }

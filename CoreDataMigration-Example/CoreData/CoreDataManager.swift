@@ -72,9 +72,9 @@ class CoreDataManager {
             fatalError("persistentContainer was not set up properly")
         }
         
-        if migrator.requiresMigration(storeURL: storeURL) {
+        if migrator.requiresMigration(at: storeURL) {
             DispatchQueue.global(qos: .userInitiated).async {
-                self.migrator.migrateStore(storeURL: storeURL)
+                self.migrator.migrateStore(at: storeURL)
                 
                 DispatchQueue.main.async {
                     completion()

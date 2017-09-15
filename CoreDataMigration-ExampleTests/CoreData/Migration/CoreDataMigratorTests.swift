@@ -115,7 +115,7 @@ class CoreDataMigratorTests: XCTestCase {
     func test_requiresMigration_true() {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         
-        let requiresMigration = migrator.requiresMigration(storeURL: storeURL)
+        let requiresMigration = migrator.requiresMigration(at: storeURL)
         
         XCTAssertTrue(requiresMigration)
     }
@@ -124,7 +124,7 @@ class CoreDataMigratorTests: XCTestCase {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let migrationModel = CoreDataMigrationModel(version: .version3)
         
-        let requiresMigration = migrator.requiresMigration(storeURL: storeURL, currentMigrationModel: migrationModel)
+        let requiresMigration = migrator.requiresMigration(at: storeURL, currentMigrationModel: migrationModel)
         
         XCTAssertFalse(requiresMigration)
     }
@@ -137,7 +137,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let sizeBeforeCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
-        migrator.forceWALCheckpointing(storeURL: storeURL)
+        migrator.forceWALCheckpointingForStore(at: storeURL)
         
         let sizeAfterCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
