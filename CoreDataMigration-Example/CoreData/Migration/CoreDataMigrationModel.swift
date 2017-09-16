@@ -169,6 +169,16 @@ class CoreDataMigrationModel {
         
         return [step] + nextStep
     }
+    
+    // MARK: - Metadata
+    
+    static func migrationModelCompatibleWithStoreMetadata(_ metadata: [String : Any]) -> CoreDataMigrationModel? {
+        let compatibleMigrationModel = CoreDataMigrationModel.all.first {
+            $0.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+        }
+        
+        return compatibleMigrationModel
+    }
 }
 
 // MARK: - Source

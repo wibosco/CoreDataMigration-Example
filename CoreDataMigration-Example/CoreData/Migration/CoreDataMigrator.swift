@@ -80,20 +80,12 @@ class CoreDataMigrator {
     // MARK: - WAL
 
     func forceWALCheckpointingForStore(at storeURL: URL) {
-        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
-            return
-        }
-        
-        let migrationVersionModel = CoreDataMigrationModel.all.first {
-            $0.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
-        }
-        
-        guard let currentCoreDataStoreMigrationVersionModel = migrationVersionModel else {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL), let migrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata)  else {
             return
         }
         
         do {
-            let model = currentCoreDataStoreMigrationVersionModel.managedObjectModel()
+            let model = migrationModel.managedObjectModel()
             let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
             
             let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
