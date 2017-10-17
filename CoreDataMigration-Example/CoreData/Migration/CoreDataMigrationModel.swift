@@ -122,7 +122,7 @@ class CoreDataMigrationModel {
         
         switch version {
         case .version1, .version2: //manual mapped versions
-            guard let mapping = manualMappingModel(to: nextVersion) else {
+            guard let mapping = customMappingModel(to: nextVersion) else {
                 return nil
             }
             
@@ -134,13 +134,15 @@ class CoreDataMigrationModel {
     
     func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
         do {
-            return try NSMappingModel.inferredMappingModel(forSourceModel: managedObjectModel(), destinationModel: nextVersion.managedObjectModel())
+            let sourceModel = managedObjectModel()
+            let destinationModel = nextVersion.managedObjectModel()
+            return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
         } catch {
             fatalError("unable to generate inferred mapping model")
         }
     }
     
-    func manualMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
+    func customMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
         let sourceModel = managedObjectModel()
         let destinationModel = nextVersion.managedObjectModel()
         guard let mapping = NSMappingModel(from: [modelBundle], forSourceModel: sourceModel, destinationModel: destinationModel) else {

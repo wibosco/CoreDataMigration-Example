@@ -18,7 +18,7 @@ class CoreDataMigrationModelTests: XCTestCase {
     class CoreDataMigrationModelSpy: CoreDataMigrationModel {
         
         var inferredMappingModelWasCalled = false
-        var manualMappingModelWasCalled = false
+        var customMappingModelWasCalled = false
         
         override func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
             inferredMappingModelWasCalled = true
@@ -26,8 +26,8 @@ class CoreDataMigrationModelTests: XCTestCase {
             return NSMappingModel()
         }
         
-        override func manualMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
-            manualMappingModelWasCalled = true
+        override func customMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
+            customMappingModelWasCalled = true
             
             return NSMappingModel()
         }
@@ -113,7 +113,7 @@ class CoreDataMigrationModelTests: XCTestCase {
         let mappingModel = version.mappingModelToSuccessor()
         
         XCTAssertNotNil(mappingModel)
-        XCTAssertTrue(version.manualMappingModelWasCalled)
+        XCTAssertTrue(version.customMappingModelWasCalled)
     }
     
     func test_fromVersion2_manualMapping() {
@@ -122,7 +122,7 @@ class CoreDataMigrationModelTests: XCTestCase {
         let mappingModel = version.mappingModelToSuccessor()
         
         XCTAssertNotNil(mappingModel)
-        XCTAssertTrue(version.manualMappingModelWasCalled)
+        XCTAssertTrue(version.customMappingModelWasCalled)
     }
     
     func test_fromVersion3_inferredMapping() {
