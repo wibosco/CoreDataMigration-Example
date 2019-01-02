@@ -15,7 +15,8 @@ class PostsViewController: UITableViewController {
     
     lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
         
         return dateFormatter
     }()
@@ -26,6 +27,7 @@ class PostsViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.rowHeight = 80.0
+        tableView.separatorColor = UIColor.clear
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +60,7 @@ class PostsViewController: UITableViewController {
                 
                 post.color = color
                 
-                try! context.save()
+                try? context.save()
                 
                 DispatchQueue.main.async {
                     completion()

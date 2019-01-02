@@ -13,49 +13,33 @@ import CoreData
 
 class CoreDataManagerTests: XCTestCase {
     
-    class CoreDataMigratorMock: CoreDataMigrator {
-        
-        var requiresMigrationWasCalled = false
-        var migrateStoreWasCalled = false
-        
-        var requiresMigrationToBeReturned = false
-        
-        override func requiresMigration(at: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
-            requiresMigrationWasCalled = true
-            
-            return requiresMigrationToBeReturned
-        }
-        
-        override func migrateStore(at: URL) {
-            migrateStoreWasCalled = true
-        }
-    }
+    var migrator: MockCoreDataMigrator!
+    var sut: CoreDataManager!
     
-    var migrator: CoreDataMigratorMock!
-    var manager: CoreDataManager!
-    
-    // MARK: - Setup
+    // MARK: - Lifecycle
 
     override func setUp() {
         super.setUp()
-        
-        migrator = CoreDataMigratorMock()
-        manager = CoreDataManager(migrator: migrator)
+    
+        migrator = MockCoreDataMigrator()
+        sut = CoreDataManager(storeType: NSInMemoryStoreType, migrator: migrator)
     }
 
     override func tearDown() {
-        let url = manager.persistentContainer.persistentStoreDescriptions.first!.url!
-        NSPersistentStoreCoordinator.destroyStore(at: url)
+        migrator = nil
+        sut = nil
         
         super.tearDown()
     }
 
-    // MARK: - Setup
+    // MARK: - Tests
+    
+    // MARK: Setup
     
     func test_setup_loadsStore() {
         let promise = expectation(description: "calls back")
-        manager.setup {
-            XCTAssertTrue(self.manager.persistentContainer.persistentStoreCoordinator.persistentStores.count > 0)
+        sut.setup {
+            XCTAssertTrue(self.sut.persistentContainer.persistentStoreCoordinator.persistentStores.count > 0)
             
             promise.fulfill()
         }
@@ -69,7 +53,7 @@ class CoreDataManagerTests: XCTestCase {
 
     func test_setup_checksIfMigrationRequired() {
         let promise = expectation(description: "calls back")
-        manager.setup {
+        sut.setup {
             XCTAssertTrue(self.migrator.requiresMigrationWasCalled)
             XCTAssertFalse(self.migrator.migrateStoreWasCalled)
             
@@ -87,7 +71,7 @@ class CoreDataManagerTests: XCTestCase {
         migrator.requiresMigrationToBeReturned = true
         
         let promise = expectation(description: "calls back")
-        manager.setup {
+        sut.setup {
             XCTAssertTrue(self.migrator.migrateStoreWasCalled)
             
             promise.fulfill()
@@ -99,5 +83,4 @@ class CoreDataManagerTests: XCTestCase {
             }
         }
     }
-    
 }
