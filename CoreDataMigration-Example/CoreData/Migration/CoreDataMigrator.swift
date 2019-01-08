@@ -10,14 +10,7 @@ import CoreData
 
 protocol CoreDataMigratorProtocol {
     func requiresMigration(at storeURL: URL, toVersion version: CoreDataMigrationVersion) -> Bool
-    func migrateStore(at: URL)
-}
-
-extension CoreDataMigratorProtocol {
-    
-    func requiresMigration(at storeURL: URL) -> Bool {
-        return requiresMigration(at: storeURL, toVersion: CoreDataMigrationVersion.latest)
-    }
+    func migrateStore(at storeURL: URL, toVersion version: CoreDataMigrationVersion)
 }
 
 /**
@@ -50,15 +43,11 @@ class CoreDataMigrator: CoreDataMigratorProtocol {
     
     // MARK: - Migration
     
-    func migrateStore(at storeURL: URL) {
-        migrateStore(from: storeURL, to: storeURL, targetVersion: CoreDataMigrationVersion.latest)
-    }
-    
-    func migrateStore(from sourceURL: URL, to targetURL: URL, targetVersion: CoreDataMigrationVersion) {
-        forceWALCheckpointingForStore(at: sourceURL)
+    func migrateStore(at storeURL: URL, toVersion version: CoreDataMigrationVersion) {
+        forceWALCheckpointingForStore(at: storeURL)
         
-        var currentURL = sourceURL
-        let migrationSteps = self.migrationSteps(forStoreAtURL: sourceURL, toDestinationVersion: targetVersion)
+        var currentURL = storeURL
+        let migrationSteps = self.migrationStepsForStore(at: storeURL, toVersion: version)
         
         for migrationStep in migrationSteps {
             let manager = NSMigrationManager(sourceModel: migrationStep.sourceModel, destinationModel: migrationStep.destinationModel)
@@ -70,7 +59,7 @@ class CoreDataMigrator: CoreDataMigratorProtocol {
                 fatalError("failed attempting to migrate from \(migrationStep.sourceModel) to \(migrationStep.destinationModel), error: \(error)")
             }
             
-            if currentURL != sourceURL {
+            if currentURL != storeURL {
                 //Destroy intermediate step's store
                 NSPersistentStoreCoordinator.destroyStore(at: currentURL)
             }
@@ -78,21 +67,21 @@ class CoreDataMigrator: CoreDataMigratorProtocol {
             currentURL = destinationURL
         }
         
-        NSPersistentStoreCoordinator.replaceStore(at: targetURL, withStoreAt: currentURL)
+        NSPersistentStoreCoordinator.replaceStore(at: storeURL, withStoreAt: currentURL)
         
-        if (currentURL != sourceURL) {
+        if (currentURL != storeURL) {
             NSPersistentStoreCoordinator.destroyStore(at: currentURL)
         }
     }
     
-    private func migrationSteps(forStoreAtURL storeURL: URL, toDestinationVersion destinationVersion: CoreDataMigrationVersion) -> [CoreDataMigrationStep] {
+    private func migrationStepsForStore(at storeURL: URL, toVersion destinationVersion: CoreDataMigrationVersion) -> [CoreDataMigrationStep] {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL), let sourceVersion = CoreDataMigrationVersion.compatibleVersionForStoreMetadata(metadata) else {
             fatalError("unknown store version at URL \(storeURL)")
         }
         
         return migrationSteps(fromSourceVersion: sourceVersion, toDestinationVersion: destinationVersion)
     }
-    
+
     private func migrationSteps(fromSourceVersion sourceVersion: CoreDataMigrationVersion, toDestinationVersion destinationVersion: CoreDataMigrationVersion) -> [CoreDataMigrationStep] {
         var sourceVersion = sourceVersion
         var migrationSteps = [CoreDataMigrationStep]()

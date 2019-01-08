@@ -26,7 +26,7 @@ class MockCoreDataMigrator: CoreDataMigratorProtocol {
         return requiresMigrationToBeReturned
     }
     
-    func migrateStore(at: URL) {
+    func migrateStore(at storeURL: URL, toVersion version: CoreDataMigrationVersion) {
         migrateStoreWasCalled = true
     }
 }
