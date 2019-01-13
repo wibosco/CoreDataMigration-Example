@@ -8,9 +8,24 @@
 
 import UIKit
 
+struct PostTableViewCellViewModel {
+    
+    let body: String
+    let date: String
+    let color: UIColor
+}
+
 class PostTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var postIDLabel: UILabel!
+    @IBOutlet weak var bodyLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 
+    // MARK: - Configure
+    
+    func configure(withViewModel viewModel: PostTableViewCellViewModel) {
+        bodyLabel.text = viewModel.body
+        dateLabel.text = viewModel.date
+        contentView.backgroundColor = viewModel.color
+    }
+    
 }

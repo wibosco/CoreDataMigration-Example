@@ -36,42 +36,20 @@ class PostsViewController: UITableViewController {
         loadData()
     }
     
-    // MARK: - ButtonActions
+    // MARK: - Segue
     
-    @IBAction func addButtonPressed(_ sender: Any) {
-        addPost {
-            self.loadData()
-        }
-    }
-    
-    // MARK: - Post
-    
-    func addPost(completion: @escaping () -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let context = CoreDataManager.shared.backgroundContext
-            context.performAndWait {
-                let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
-                post.postID = UUID().uuidString
-                post.date = Date()
-                
-                let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: context) as! Color
-                color.colorID = UUID().uuidString
-                color.hex = UIColor.random.hexString
-                
-                post.color = color
-                
-                try? context.save()
-                
-                DispatchQueue.main.async {
-                    completion()
-                }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Viewer" {
+            if let postViewCcontroller = segue.destination as? PostViewerViewController, let tableViewCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: tableViewCell) {
+                let post = posts[indexPath.row]
+                postViewCcontroller.post = post
             }
         }
     }
     
     // MARK: - Load
     
-    func loadData() {
+    private func loadData() {
         let context = CoreDataManager.shared.mainContext
         let request = NSFetchRequest<Post>.init(entityName: "Post")
         let dateSort = NSSortDescriptor(key: "date", ascending: false)
@@ -93,10 +71,18 @@ class PostsViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         
-        cell.postIDLabel.text = post.postID
-        cell.dateLabel.text = dateFormatter.string(from: post.date!)
-        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.color!.hex!)
+        let viewModel = self.viewModel(forPost: post)
+        cell.configure(withViewModel: viewModel)
         
         return cell
+    }
+    
+    // MARK: - ViewModel
+    
+    private func viewModel(forPost post: Post) -> PostTableViewCellViewModel {
+        let color = UIColor.colorWithHex(hexColor: post.color!) ?? UIColor.white
+        let formattedDate = dateFormatter.string(from: post.date!)
+        
+        return PostTableViewCellViewModel(body: post.content!, date: formattedDate, color: color)
     }
 }

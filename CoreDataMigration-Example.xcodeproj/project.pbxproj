@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3D8E52F521E0EF2800FE1D35 /* FileManager+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E52F421E0EF2800FE1D35 /* FileManager+Helper.swift */; };
 		3D8E52F721E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E52F621E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift */; };
+		3DDB26C921EBF87E00388AEE /* PostWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */; };
+		3DDB26CB21EC00FE00388AEE /* PostViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */; };
 		431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEAA1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodeld */; };
 		431DCEBF1F67F18100CF6316 /* CoreDataMigrationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEB11F67EE2600CF6316 /* CoreDataMigrationStep.swift */; };
 		431DCEC01F67F18100CF6316 /* CoreDataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEB21F67EE2600CF6316 /* CoreDataMigrator.swift */; };
@@ -53,6 +55,8 @@
 /* Begin PBXFileReference section */
 		3D8E52F421E0EF2800FE1D35 /* FileManager+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Helper.swift"; sourceTree = "<group>"; };
 		3D8E52F621E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Helper.swift"; sourceTree = "<group>"; };
+		3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriterViewController.swift; sourceTree = "<group>"; };
+		3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewerViewController.swift; sourceTree = "<group>"; };
 		431DCEAB1F67EC7100CF6316 /* CoreDataMigration_Example 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataMigration_Example 2.xcdatamodel"; sourceTree = "<group>"; };
 		431DCEAC1F67EC7100CF6316 /* CoreDataMigration_Example 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataMigration_Example 3.xcdatamodel"; sourceTree = "<group>"; };
 		431DCEAD1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataMigration_Example.xcdatamodel; sourceTree = "<group>"; };
@@ -117,6 +121,22 @@
 				3D8E52F621E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		3DDB26C621EBF86300388AEE /* Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */,
+			);
+			path = Viewer;
+			sourceTree = "<group>";
+		};
+		3DDB26C721EBF86300388AEE /* Writer */ = {
+			isa = PBXGroup;
+			children = (
+				3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */,
+			);
+			path = Writer;
 			sourceTree = "<group>";
 		};
 		431DCEAF1F67EE2600CF6316 /* Migration */ = {
@@ -205,6 +225,8 @@
 			children = (
 				431DCEC61F67F91C00CF6316 /* Loading */,
 				431DCEC71F67F91C00CF6316 /* Posts */,
+				3DDB26C621EBF86300388AEE /* Viewer */,
+				3DDB26C721EBF86300388AEE /* Writer */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -482,6 +504,7 @@
 				431DCEC01F67F18100CF6316 /* CoreDataMigrator.swift in Sources */,
 				C28553E421DD1D7B0004C7BA /* NSManagedObjectModel+Resource.swift in Sources */,
 				431DCECB1F67F93000CF6316 /* AppLoadingViewController.swift in Sources */,
+				3DDB26CB21EC00FE00388AEE /* PostViewerViewController.swift in Sources */,
 				C28553E221DD14090004C7BA /* NSManagedObjectModel+Compatible.swift in Sources */,
 				431DCED61F68315900CF6316 /* Migration2to3.xcmappingmodel in Sources */,
 				4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */,
@@ -496,6 +519,7 @@
 				431DCEBF1F67F18100CF6316 /* CoreDataMigrationStep.swift in Sources */,
 				431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */,
 				431DCEC21F67F1B100CF6316 /* Migration1to2.xcmappingmodel in Sources */,
+				3DDB26C921EBF87E00388AEE /* PostWriterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,7 +784,7 @@
 				431DCEAC1F67EC7100CF6316 /* CoreDataMigration_Example 3.xcdatamodel */,
 				431DCEAD1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodel */,
 			);
-			currentVersion = 431DCED71F68394200CF6316 /* CoreDataMigration_Example 4.xcdatamodel */;
+			currentVersion = 431DCEAD1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodel */;
 			path = CoreDataMigration_Example.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
