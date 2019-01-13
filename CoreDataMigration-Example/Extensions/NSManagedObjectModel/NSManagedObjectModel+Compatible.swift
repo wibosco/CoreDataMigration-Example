@@ -14,10 +14,7 @@ extension NSManagedObjectModel {
     // MARK: - Compatible
     
     static func compatibleModelForStoreMetadata(_ metadata: [String : Any]) -> NSManagedObjectModel? {
-        guard let compatibleModelVersion = CoreDataMigrationVersion.compatibleVersionForStoreMetadata(metadata) else {
-            return nil
-        }
-        
-        return NSManagedObjectModel.managedObjectModel(forResource: compatibleModelVersion.rawValue)
+        let mainBundle = Bundle.main
+        return NSManagedObjectModel.mergedModel(from: [mainBundle], forStoreMetadata: metadata)
     }
 }

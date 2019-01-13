@@ -18,7 +18,11 @@ enum CoreDataMigrationVersion: String, CaseIterable {
     // MARK: - Latest
     
     static var latest: CoreDataMigrationVersion {
-        return allCases.last!
+        guard let latest = allCases.last else {
+            fatalError("no model versions found")
+        }
+        
+        return latest
     }
     
     // MARK: - Migration
@@ -34,17 +38,5 @@ enum CoreDataMigrationVersion: String, CaseIterable {
         case .version4:
             return nil
         }
-    }
-    
-    // MARK: - Compatible
-    
-    static func compatibleVersionForStoreMetadata(_ metadata: [String : Any]) -> CoreDataMigrationVersion? {
-        let compatibleVersion = CoreDataMigrationVersion.allCases.first {
-            let model = NSManagedObjectModel.managedObjectModel(forResource: $0.rawValue)
-            
-            return model.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
-        }
-        
-        return compatibleVersion
     }
 }
