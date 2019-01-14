@@ -17,10 +17,20 @@ final class Post2ToPost3MigrationPolicy: NSEntityMigrationPolicy {
             fatalError("was expected a post")
         }
         
-        let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: destinationPost.managedObjectContext!)
-        color.setValue(UUID().uuidString, forKey: "colorID")
-        color.setValue(sInstance.value(forKey: "hexColor"), forKey: "hex")
+        let sourceBody = sInstance.value(forKey: "content") as? String
+        let sourceTitle = sourceBody?.prefix(80)
+        let sourceHexColor = sInstance.value(forKey: "hexColor")
         
-        destinationPost.setValue(color, forKey: "color")
+        let titleContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: destinationPost.managedObjectContext!)
+        titleContent.setValue(sourceTitle, forKey: "content")
+        titleContent.setValue(sourceHexColor, forKey: "hexColor")
+        titleContent.setValue(destinationPost, forKey: "post")
+        destinationPost.setValue(titleContent, forKey: "title")
+        
+        let bodyContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: destinationPost.managedObjectContext!)
+        bodyContent.setValue(sourceBody, forKey: "content")
+        bodyContent.setValue(sourceHexColor, forKey: "hexColor")
+        bodyContent.setValue(destinationPost, forKey: "post")
+        destinationPost.setValue(bodyContent, forKey: "body")
     }
 }

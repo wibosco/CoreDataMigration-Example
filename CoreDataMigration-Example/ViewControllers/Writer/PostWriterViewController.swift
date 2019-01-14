@@ -11,51 +11,60 @@ import CoreData
 
 class PostWriterViewController: UIViewController {
 
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var bodyTextView: UITextView!
     
     // MARK: - ViewLifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textView.text = nil
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
+        
+        titleTextField.text = nil
+        bodyTextView.text = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
+        titleTextField.becomeFirstResponder()
     }
     
     // MARK: - Keyboard
     
     @objc func keyboardWillAppear(_ notification: NSNotification) {
         let keyboardRect = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        let rect = textView.convert(keyboardRect, from: nil)
+        let rect = bodyTextView.convert(keyboardRect, from: nil)
         
-        textView.contentInset.bottom = rect.size.height
-        textView.scrollIndicatorInsets.bottom = rect.size.height
+        bodyTextView.contentInset.bottom = rect.size.height
+        bodyTextView.scrollIndicatorInsets.bottom = rect.size.height
     }
     
     // MARK: - ButtonActions
     
     @IBAction func saveButtonPressed(_ sender: Any) {
-        let content = textView.text
+        let title = titleTextField.text
+        let body = bodyTextView.text
         DispatchQueue.global(qos: .userInitiated).async {
             let context = CoreDataManager.shared.backgroundContext
             context.performAndWait {
                 let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
                 post.postID = UUID().uuidString
                 post.date = Date()
-                post.content = content
-                post.color = UIColor.random.hexString
+                
+                let titleContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: context) as! Content
+                titleContent.content = title
+                titleContent.hexColor = UIColor.random.hexString
 
+                post.title = titleContent
+                
+                let bodyContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: context) as! Content
+                bodyContent.content = body
+                bodyContent.hexColor = UIColor.random.hexString
+                
+                post.body = bodyContent
+                
                 try? context.save()
                 
                 DispatchQueue.main.async {

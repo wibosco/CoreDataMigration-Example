@@ -57,17 +57,19 @@ class CoreDataMigratorTests: XCTestCase {
         
         let migratedPosts = try? context.fetch(request)
         
-        XCTAssertEqual(migratedPosts?.count, 1001)
+        XCTAssertEqual(migratedPosts?.count, 10)
         
         let firstMigratedPost = migratedPosts?.first
         
         let migratedDate = firstMigratedPost?.value(forKey: "date") as? Date
         let migratedHexColor = firstMigratedPost?.value(forKey: "hexColor") as? String
         let migratedPostID = firstMigratedPost?.value(forKey: "postID") as? String
+        let migratedContent = firstMigratedPost?.value(forKey: "content") as? String
         
-        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1505221438.419883)
-        XCTAssertEqual(migratedHexColor, "259EB7")
-        XCTAssertEqual(migratedPostID, "FFC75007-7B10-44B5-8B3D-C13FF9E47BAD")
+        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1547494150.058821)
+        XCTAssertEqual(migratedHexColor, "1BB732")
+        XCTAssertEqual(migratedPostID, "FFFECB21-6645-4FDD-B8B0-B960D0E61F5A")
+        XCTAssertEqual(migratedContent, "Test body")
     }
     
     func test_individualStepMigration_2to3() {
@@ -77,39 +79,47 @@ class CoreDataMigratorTests: XCTestCase {
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: sourceURL.path))
-        
+
         let model = NSManagedObjectModel.managedObjectModel(forResource: toVersion.rawValue)
         let context = NSManagedObjectContext(model: model, storeURL: sourceURL)
-        
+
         let postRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Post")
         let postSort = NSSortDescriptor(key: "postID", ascending: false)
         postRequest.sortDescriptors = [postSort]
-        
+
         let migratedPosts = try? context.fetch(postRequest)
-        
-        XCTAssertEqual(migratedPosts?.count, 5979)
-        
+
+        XCTAssertEqual(migratedPosts?.count, 10)
+
         let firstMigratedPost = migratedPosts?.first
-        
+
         let migratedDate = firstMigratedPost?.value(forKey: "date") as? Date
         let migratedPostID = firstMigratedPost?.value(forKey: "postID") as? String
-        let migratedColor = firstMigratedPost?.value(forKey: "color") as? NSManagedObject
+        let migratedTitleContent = firstMigratedPost?.value(forKey: "title") as? NSManagedObject
+        let migratedBodyContent = firstMigratedPost?.value(forKey: "body") as? NSManagedObject
+
+        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1547494150.058821)
+        XCTAssertEqual(migratedPostID, "FFFECB21-6645-4FDD-B8B0-B960D0E61F5A")
+        XCTAssertNotNil(migratedTitleContent)
+        XCTAssertNotNil(migratedBodyContent)
+
+        let migratedTitleContentContent = migratedTitleContent?.value(forKey: "content") as? String
+        let migratedTitleContentHexColor = migratedTitleContent?.value(forKey: "hexColor") as? String
+
+        XCTAssertEqual(migratedTitleContentContent, "Test body")
+        XCTAssertEqual(migratedTitleContentHexColor, "1BB732")
         
-        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1505220908.454949)
-        XCTAssertEqual(migratedPostID, "FFFF32E3-2643-4FA1-9CB7-9DB4EAE088ED")
-        XCTAssertNotNil(migratedColor)
+        let migratedBodyContentContent = migratedBodyContent?.value(forKey: "content") as? String
+        let migratedBodyContentHexColor = migratedBodyContent?.value(forKey: "hexColor") as? String
         
-        let migratedColorID = migratedColor?.value(forKey: "colorID") as? String
-        let migratedHex = migratedColor?.value(forKey: "hex") as? String
-        
-        XCTAssertNotNil(migratedColorID) //Not a migrated value but rather one that's generated upon migration
-        XCTAssertEqual(migratedHex, "511ADB")
-        
-        let colorRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Color")
-        
-        let migratedColors = try? context.fetch(colorRequest)
-        
-        XCTAssertEqual(migratedColors?.count, 5979)
+        XCTAssertEqual(migratedBodyContentContent, "Test body")
+        XCTAssertEqual(migratedBodyContentHexColor, "1BB732")
+
+        let contentRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Content")
+
+        let migratedContents = try? context.fetch(contentRequest)
+
+        XCTAssertEqual(migratedContents?.count, 20)
     }
 
     func test_individualStepMigration_3to4() {
@@ -119,45 +129,49 @@ class CoreDataMigratorTests: XCTestCase {
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: sourceURL.path))
-        
+
         let model = NSManagedObjectModel.managedObjectModel(forResource: toVersion.rawValue)
         let context = NSManagedObjectContext(model: model, storeURL: sourceURL)
-        
+
         let postRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Post")
         let postSort = NSSortDescriptor(key: "postID", ascending: false)
         postRequest.sortDescriptors = [postSort]
-        
+
         let migratedPosts = try? context.fetch(postRequest)
-        
-        XCTAssertEqual(migratedPosts?.count, 7995)
-        
+
+        XCTAssertEqual(migratedPosts?.count, 10)
+
         let firstMigratedPost = migratedPosts?.first
-        
+
         let migratedDate = firstMigratedPost?.value(forKey: "date") as? Date
         let migratedPostID = firstMigratedPost?.value(forKey: "postID") as? String
-        let migratedHide = firstMigratedPost?.value(forKey: "hide") as? Bool
-        let migratedColor = firstMigratedPost?.value(forKey: "color") as? NSManagedObject
+        let migratedHidden = firstMigratedPost?.value(forKey: "hidden") as? Bool
+        let migratedTitleContent = firstMigratedPost?.value(forKey: "title") as? NSManagedObject
+        let migratedBodyContent = firstMigratedPost?.value(forKey: "body") as? NSManagedObject
         
-        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1505220908.454949)
-        XCTAssertEqual(migratedPostID, "FFFF32E3-2643-4FA1-9CB7-9DB4EAE088ED")
-        XCTAssertFalse(migratedHide ?? true)
-        XCTAssertNotNil(migratedColor)
+        XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1547494150.058821)
+        XCTAssertEqual(migratedPostID, "FFFECB21-6645-4FDD-B8B0-B960D0E61F5A")
+        XCTAssertFalse(migratedHidden ?? true)
+        XCTAssertNotNil(migratedTitleContent)
+        XCTAssertNotNil(migratedBodyContent)
         
-        let colorRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Color")
-        let colorSort = NSSortDescriptor(key: "colorID", ascending: false)
-        colorRequest.sortDescriptors = [colorSort]
+        let migratedTitleContentContent = migratedTitleContent?.value(forKey: "content") as? String
+        let migratedTitleContentHexColor = migratedTitleContent?.value(forKey: "hexColor") as? String
         
-        let migratedColors = try? context.fetch(colorRequest)
+        XCTAssertEqual(migratedTitleContentContent, "Test body")
+        XCTAssertEqual(migratedTitleContentHexColor, "1BB732")
         
-        XCTAssertEqual(migratedColors?.count, 7995)
+        let migratedBodyContentContent = migratedBodyContent?.value(forKey: "content") as? String
+        let migratedBodyContentHexColor = migratedBodyContent?.value(forKey: "hexColor") as? String
         
-        let firstMigratedColor = migratedColors?.first
+        XCTAssertEqual(migratedBodyContentContent, "Test body")
+        XCTAssertEqual(migratedBodyContentHexColor, "1BB732")
         
-        let migratedColorID = firstMigratedColor?.value(forKey: "colorID") as? String
-        let migratedHex = firstMigratedColor?.value(forKey: "hex") as? String
+        let contentRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Content")
         
-        XCTAssertEqual(migratedColorID, "FFF20DBB-6C19-4E74-AD20-1DA56255BB54")
-        XCTAssertEqual(migratedHex, "29FCE8")
+        let migratedContents = try? context.fetch(contentRequest)
+        
+        XCTAssertEqual(migratedContents?.count, 20)
     }
 
     // MARK: MultipleStepMigrations
@@ -169,18 +183,18 @@ class CoreDataMigratorTests: XCTestCase {
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: sourceURL.path))
-        
+
         let model = NSManagedObjectModel.managedObjectModel(forResource: toVersion.rawValue)
         let context = NSManagedObjectContext(model: model, storeURL: sourceURL)
-        
+
         let postRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Post")
-        let colorRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Color")
-        
+        let colorRequest = NSFetchRequest<NSManagedObject>.init(entityName: "Content")
+
         let migratedPosts = try? context.fetch(postRequest)
         let migratedColors = try? context.fetch(colorRequest)
-        
-        XCTAssertEqual(migratedPosts?.count, 1001)
-        XCTAssertEqual(migratedColors?.count, 1001)
+
+        XCTAssertEqual(migratedPosts?.count, 10)
+        XCTAssertEqual(migratedColors?.count, 20)
     }
 
     // MARK: MigrationRequired
@@ -199,21 +213,5 @@ class CoreDataMigratorTests: XCTestCase {
         let requiresMigration = sut.requiresMigration(at: storeURL, toVersion: .version3)
 
         XCTAssertFalse(requiresMigration)
-    }
-
-    // MARK: CheckPointing
-
-    func test_forceWALTransactions_success() {
-        let storeURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite")
-        let walLocation = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite-wal")
-
-        let sizeBeforeCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
-
-        sut.forceWALCheckpointingForStore(at: storeURL)
-
-        let sizeAfterCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
-
-        XCTAssertFalse(FileManager.default.fileExists(atPath: walLocation.path))
-        XCTAssertTrue(sizeAfterCheckPointing.doubleValue > sizeBeforeCheckPointing.doubleValue)
     }
 }

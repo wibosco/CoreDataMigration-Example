@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13233.4" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Color" representedClassName="Color" syncable="YES" codeGenerationType="class">
-        <attribute name="colorID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hex" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Post" inverseName="color" inverseEntity="Post" syncable="YES"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Content" representedClassName="Content" syncable="YES" codeGenerationType="class">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hexColor" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Post" syncable="YES"/>
     </entity>
     <entity name="Post" representedClassName="Post" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="hide" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="color" maxCount="1" deletionRule="Nullify" destinationEntity="Color" inverseName="post" inverseEntity="Color" syncable="YES"/>
+        <relationship name="body" maxCount="1" deletionRule="Nullify" destinationEntity="Content" syncable="YES"/>
+        <relationship name="title" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Color" positionX="-63" positionY="9" width="128" height="90"/>
-        <element name="Post" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Content" positionX="-63" positionY="9" width="128" height="90"/>
+        <element name="Post" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

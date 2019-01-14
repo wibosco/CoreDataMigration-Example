@@ -42,7 +42,8 @@ class PostsViewController: UITableViewController {
         if segue.identifier == "Viewer" {
             if let postViewCcontroller = segue.destination as? PostViewerViewController, let tableViewCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: tableViewCell) {
                 let post = posts[indexPath.row]
-                postViewCcontroller.post = post
+                let viewModel = postViewerViewModel(forPost: post)
+                postViewCcontroller.viewModel = viewModel
             }
         }
     }
@@ -53,8 +54,10 @@ class PostsViewController: UITableViewController {
         let context = CoreDataManager.shared.mainContext
         let request = NSFetchRequest<Post>.init(entityName: "Post")
         let dateSort = NSSortDescriptor(key: "date", ascending: false)
+        let predicate = NSPredicate(format: "hidden == NO")
         
         request.sortDescriptors = [dateSort]
+        request.predicate = predicate
         posts = try! context.fetch(request)
         
         tableView.reloadData()
@@ -71,18 +74,25 @@ class PostsViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         
-        let viewModel = self.viewModel(forPost: post)
+        let viewModel = cellViewModel(forPost: post)
         cell.configure(withViewModel: viewModel)
         
         return cell
     }
     
-    // MARK: - ViewModel
+    // MARK: - ViewModels
     
-    private func viewModel(forPost post: Post) -> PostTableViewCellViewModel {
-        let color = UIColor.colorWithHex(hexColor: post.color!) ?? UIColor.white
+    private func cellViewModel(forPost post: Post) -> PostTableViewCellViewModel {
+        let backgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
         let formattedDate = dateFormatter.string(from: post.date!)
         
-        return PostTableViewCellViewModel(body: post.content!, date: formattedDate, color: color)
+        return PostTableViewCellViewModel(title: post.title!.content!, date: formattedDate, backgroundColor: backgroundColor)
+    }
+    
+    private func postViewerViewModel(forPost post: Post) -> PostViewerViewModel {
+        let titleBackgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
+        let bodyBackgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
+        
+        return PostViewerViewModel(postID: post.postID!, title: post.title!.content!, body: post.body!.content!, titleBackgroundColor: titleBackgroundColor, bodyBackgroundColor: bodyBackgroundColor)
     }
 }
