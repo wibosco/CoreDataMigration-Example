@@ -21,4 +21,13 @@ extension NSManagedObjectContext {
         
         self.persistentStoreCoordinator = persistentStoreCoordinator
     }
+    
+    // MARK: - Destroy
+    
+    func destroyStore() {
+        persistentStoreCoordinator?.persistentStores.forEach {
+            try? persistentStoreCoordinator?.remove($0)
+            try? persistentStoreCoordinator?.destroyPersistentStore(at: $0.url!, ofType: $0.type, options: nil)
+        }
+    }
 }

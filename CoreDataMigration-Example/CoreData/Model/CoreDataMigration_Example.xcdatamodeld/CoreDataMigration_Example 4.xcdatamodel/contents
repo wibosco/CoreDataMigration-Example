@@ -7,8 +7,8 @@
     </entity>
     <entity name="Post" representedClassName="Post" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="hidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="softDeleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="body" maxCount="1" deletionRule="Nullify" destinationEntity="Content" syncable="YES"/>
         <relationship name="title" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" syncable="YES"/>
     </entity>

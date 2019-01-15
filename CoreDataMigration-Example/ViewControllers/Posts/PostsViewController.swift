@@ -54,7 +54,7 @@ class PostsViewController: UITableViewController {
         let context = CoreDataManager.shared.mainContext
         let request = NSFetchRequest<Post>.init(entityName: "Post")
         let dateSort = NSSortDescriptor(key: "date", ascending: false)
-        let predicate = NSPredicate(format: "hidden == NO")
+        let predicate = NSPredicate(format: "softDeleted == NO")
         
         request.sortDescriptors = [dateSort]
         request.predicate = predicate

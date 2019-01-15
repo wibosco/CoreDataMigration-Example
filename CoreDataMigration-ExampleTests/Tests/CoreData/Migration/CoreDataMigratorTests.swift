@@ -17,12 +17,6 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - Lifecycle
     
-    override class func setUp() {
-        super.setUp()
-        
-        FileManager.clearTmpDirectoryContents()
-    }
-    
     override func setUp() {
         super.setUp()
         
@@ -30,11 +24,13 @@ class CoreDataMigratorTests: XCTestCase {
     }
     
     override func tearDown() {
-        FileManager.clearTmpDirectoryContents()
-        
         sut = nil
         
         super.tearDown()
+    }
+    
+    func tearDownCoreDataStack(context: NSManagedObjectContext) {
+        context.destroyStore()
     }
     
     // MARK: - Tests
@@ -42,7 +38,7 @@ class CoreDataMigratorTests: XCTestCase {
     // MARK: SingleStepMigrations
     
     func test_individualStepMigration_1to2() {
-        let sourceURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+        let sourceURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_1.sqlite")
         let toVersion = CoreDataMigrationVersion.version2
         
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
@@ -70,10 +66,12 @@ class CoreDataMigratorTests: XCTestCase {
         XCTAssertEqual(migratedHexColor, "1BB732")
         XCTAssertEqual(migratedPostID, "FFFECB21-6645-4FDD-B8B0-B960D0E61F5A")
         XCTAssertEqual(migratedContent, "Test body")
+        
+        tearDownCoreDataStack(context: context)
     }
     
     func test_individualStepMigration_2to3() {
-        let sourceURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_2.sqlite")
+        let sourceURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_2.sqlite")
         let toVersion = CoreDataMigrationVersion.version3
 
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
@@ -120,10 +118,12 @@ class CoreDataMigratorTests: XCTestCase {
         let migratedContents = try? context.fetch(contentRequest)
 
         XCTAssertEqual(migratedContents?.count, 20)
+        
+        tearDownCoreDataStack(context: context)
     }
 
     func test_individualStepMigration_3to4() {
-        let sourceURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
+        let sourceURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_3.sqlite")
         let toVersion = CoreDataMigrationVersion.version4
 
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
@@ -145,13 +145,13 @@ class CoreDataMigratorTests: XCTestCase {
 
         let migratedDate = firstMigratedPost?.value(forKey: "date") as? Date
         let migratedPostID = firstMigratedPost?.value(forKey: "postID") as? String
-        let migratedHidden = firstMigratedPost?.value(forKey: "hidden") as? Bool
+        let migratedSoftDeleted = firstMigratedPost?.value(forKey: "softDeleted") as? Bool
         let migratedTitleContent = firstMigratedPost?.value(forKey: "title") as? NSManagedObject
         let migratedBodyContent = firstMigratedPost?.value(forKey: "body") as? NSManagedObject
         
         XCTAssertEqual(migratedDate?.timeIntervalSince1970, 1547494150.058821)
         XCTAssertEqual(migratedPostID, "FFFECB21-6645-4FDD-B8B0-B960D0E61F5A")
-        XCTAssertFalse(migratedHidden ?? true)
+        XCTAssertFalse(migratedSoftDeleted ?? true)
         XCTAssertNotNil(migratedTitleContent)
         XCTAssertNotNil(migratedBodyContent)
         
@@ -172,12 +172,14 @@ class CoreDataMigratorTests: XCTestCase {
         let migratedContents = try? context.fetch(contentRequest)
         
         XCTAssertEqual(migratedContents?.count, 20)
+        
+        tearDownCoreDataStack(context: context)
     }
 
     // MARK: MultipleStepMigrations
 
     func test_multipleStepMigration_fromVersion1toVersion4() {
-        let sourceURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+        let sourceURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_1.sqlite")
         let toVersion = CoreDataMigrationVersion.version4
 
         sut.migrateStore(at: sourceURL, toVersion: toVersion)
@@ -195,12 +197,14 @@ class CoreDataMigratorTests: XCTestCase {
 
         XCTAssertEqual(migratedPosts?.count, 10)
         XCTAssertEqual(migratedColors?.count, 20)
+        
+        tearDownCoreDataStack(context: context)
     }
 
     // MARK: MigrationRequired
 
     func test_requiresMigration_fromVersion1ToCurrent_true() {
-        let storeURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
+        let storeURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_1.sqlite")
 
         let requiresMigration = sut.requiresMigration(at: storeURL, toVersion: CoreDataMigrationVersion.latest)
 
@@ -208,7 +212,7 @@ class CoreDataMigratorTests: XCTestCase {
     }
 
     func test_requiresMigration_fromVersion3ToVersion3_false() {
-        let storeURL = FileManager.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
+        let storeURL = FileManager.moveFileFromBundleToTempDirectory(filename: "CoreDataMigration_Example_3.sqlite")
 
         let requiresMigration = sut.requiresMigration(at: storeURL, toVersion: .version3)
 

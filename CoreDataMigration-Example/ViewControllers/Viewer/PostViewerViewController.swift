@@ -47,7 +47,7 @@ class PostViewerViewController: UIViewController {
                 request.predicate = NSPredicate(format: "postID == '\(self.viewModel.postID)'")
                 
                 let post = try! context.fetch(request).first!
-                post.hidden = true
+                post.softDeleted = true
                 
                 try? context.save()
                 
