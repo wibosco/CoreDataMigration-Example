@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D70ED0721ED328D001C2516 /* Migration2to3ModelMapping.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3D70ED0621ED328D001C2516 /* Migration2to3ModelMapping.xcmappingmodel */; };
 		3D8E52F521E0EF2800FE1D35 /* FileManager+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E52F421E0EF2800FE1D35 /* FileManager+Helper.swift */; };
 		3D8E52F721E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E52F621E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift */; };
+		3DACAAD221EE9D5D00309A75 /* PostSectionWriterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DACAAD121EE9D5D00309A75 /* PostSectionWriterTableViewCell.swift */; };
+		3DD99ED021F1118700CB4B6E /* Migration2to3ModelMapping.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3DD99ECF21F1118700CB4B6E /* Migration2to3ModelMapping.xcmappingmodel */; };
+		3DD99ED321F145EC00CB4B6E /* FileManager+ApplicationSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD99ED221F145EC00CB4B6E /* FileManager+ApplicationSupport.swift */; };
 		3DDB26C921EBF87E00388AEE /* PostWriterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */; };
 		3DDB26CB21EC00FE00388AEE /* PostViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */; };
 		431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 431DCEAA1F67EC7100CF6316 /* CoreDataMigration_Example.xcdatamodeld */; };
@@ -27,7 +29,7 @@
 		43370DBE1F66F0DF006188EC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370DBB1F66F0C0006188EC /* CoreDataManager.swift */; };
 		4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */; };
 		4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4EF1F67E10700027D11 /* UIColor+Random.swift */; };
-		4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */; };
+		C23BD45A21F08A350039A36B /* PostSectionViewerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23BD45921F08A350039A36B /* PostSectionViewerTableViewCell.swift */; };
 		C28553DF21DCF5000004C7BA /* CoreDataMigrationVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28553DE21DCF5000004C7BA /* CoreDataMigrationVersion.swift */; };
 		C28553E221DD14090004C7BA /* NSManagedObjectModel+Compatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28553E121DD14090004C7BA /* NSManagedObjectModel+Compatible.swift */; };
 		C28553E421DD1D7B0004C7BA /* NSManagedObjectModel+Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28553E321DD1D7B0004C7BA /* NSManagedObjectModel+Resource.swift */; };
@@ -50,9 +52,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3D70ED0621ED328D001C2516 /* Migration2to3ModelMapping.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Migration2to3ModelMapping.xcmappingmodel; sourceTree = "<group>"; };
 		3D8E52F421E0EF2800FE1D35 /* FileManager+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Helper.swift"; sourceTree = "<group>"; };
 		3D8E52F621E0F98500FE1D35 /* NSManagedObjectContext+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Helper.swift"; sourceTree = "<group>"; };
+		3DACAAD121EE9D5D00309A75 /* PostSectionWriterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSectionWriterTableViewCell.swift; sourceTree = "<group>"; };
+		3DD99ECF21F1118700CB4B6E /* Migration2to3ModelMapping.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Migration2to3ModelMapping.xcmappingmodel; sourceTree = "<group>"; };
+		3DD99ED221F145EC00CB4B6E /* FileManager+ApplicationSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+ApplicationSupport.swift"; sourceTree = "<group>"; };
 		3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriterViewController.swift; sourceTree = "<group>"; };
 		3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewerViewController.swift; sourceTree = "<group>"; };
 		431DCEAB1F67EC7100CF6316 /* CoreDataMigration_Example 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataMigration_Example 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -75,9 +79,9 @@
 		43370DBB1F66F0C0006188EC /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		4345D4EF1F67E10700027D11 /* UIColor+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
-		4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Random.swift"; sourceTree = "<group>"; };
 		43AB8AE51F66E6A5003153B3 /* CoreDataMigration-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CoreDataMigration-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43AB8AFC1F66E6A5003153B3 /* CoreDataMigration-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataMigration-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C23BD45921F08A350039A36B /* PostSectionViewerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSectionViewerTableViewCell.swift; sourceTree = "<group>"; };
 		C28553DE21DCF5000004C7BA /* CoreDataMigrationVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationVersion.swift; sourceTree = "<group>"; };
 		C28553E121DD14090004C7BA /* NSManagedObjectModel+Compatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+Compatible.swift"; sourceTree = "<group>"; };
 		C28553E321DD1D7B0004C7BA /* NSManagedObjectModel+Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+Resource.swift"; sourceTree = "<group>"; };
@@ -117,10 +121,19 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		3DD99ED121F145CF00CB4B6E /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				3DD99ED221F145EC00CB4B6E /* FileManager+ApplicationSupport.swift */,
+			);
+			path = FileManager;
+			sourceTree = "<group>";
+		};
 		3DDB26C621EBF86300388AEE /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
 				3DDB26CA21EC00FE00388AEE /* PostViewerViewController.swift */,
+				C23BD45921F08A350039A36B /* PostSectionViewerTableViewCell.swift */,
 			);
 			path = Viewer;
 			sourceTree = "<group>";
@@ -129,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				3DDB26C821EBF87E00388AEE /* PostWriterViewController.swift */,
+				3DACAAD121EE9D5D00309A75 /* PostSectionWriterTableViewCell.swift */,
 			);
 			path = Writer;
 			sourceTree = "<group>";
@@ -148,7 +162,7 @@
 		431DCEB31F67EE2600CF6316 /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
-				3D70ED0621ED328D001C2516 /* Migration2to3ModelMapping.xcmappingmodel */,
+				3DD99ECF21F1118700CB4B6E /* Migration2to3ModelMapping.xcmappingmodel */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -245,7 +259,7 @@
 		4345D4EA1F67E0DD00027D11 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4345D4F31F67E1FC00027D11 /* CGFloat */,
+				3DD99ED121F145CF00CB4B6E /* FileManager */,
 				C28553E021DD13EF0004C7BA /* NSManagedObjectModel */,
 				431DCEBC1F67F07100CF6316 /* NSPersistentStoreCoordinator */,
 				4345D4EC1F67E0DD00027D11 /* UIColor */,
@@ -260,14 +274,6 @@
 				4345D4EF1F67E10700027D11 /* UIColor+Random.swift */,
 			);
 			path = UIColor;
-			sourceTree = "<group>";
-		};
-		4345D4F31F67E1FC00027D11 /* CGFloat */ = {
-			isa = PBXGroup;
-			children = (
-				4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */,
-			);
-			path = CGFloat;
 			sourceTree = "<group>";
 		};
 		43AB8ADC1F66E6A5003153B3 = {
@@ -491,23 +497,25 @@
 			files = (
 				43370DB01F66E7A6006188EC /* AppDelegate.swift in Sources */,
 				431DCEC01F67F18100CF6316 /* CoreDataMigrator.swift in Sources */,
-				3D70ED0721ED328D001C2516 /* Migration2to3ModelMapping.xcmappingmodel in Sources */,
 				C28553E421DD1D7B0004C7BA /* NSManagedObjectModel+Resource.swift in Sources */,
 				431DCECB1F67F93000CF6316 /* AppLoadingViewController.swift in Sources */,
 				3DDB26CB21EC00FE00388AEE /* PostViewerViewController.swift in Sources */,
+				3DD99ED021F1118700CB4B6E /* Migration2to3ModelMapping.xcmappingmodel in Sources */,
 				C28553E221DD14090004C7BA /* NSManagedObjectModel+Compatible.swift in Sources */,
-				4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */,
 				C28553DF21DCF5000004C7BA /* CoreDataMigrationVersion.swift in Sources */,
 				432EA5591F6C552800EFE008 /* NSPersistentStoreCoordinator+SQLite.swift in Sources */,
+				C23BD45A21F08A350039A36B /* PostSectionViewerTableViewCell.swift in Sources */,
 				4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */,
 				4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */,
 				431DCED21F6815A300CF6316 /* Post2ToPost3MigrationPolicy.swift in Sources */,
 				431DCECD1F67FE0800CF6316 /* PostTableViewCell.swift in Sources */,
 				431DCECC1F67FE0500CF6316 /* PostsViewController.swift in Sources */,
 				43370DBE1F66F0DF006188EC /* CoreDataManager.swift in Sources */,
+				3DD99ED321F145EC00CB4B6E /* FileManager+ApplicationSupport.swift in Sources */,
 				431DCEBF1F67F18100CF6316 /* CoreDataMigrationStep.swift in Sources */,
 				431DCEAE1F67EC9E00CF6316 /* CoreDataMigration_Example.xcdatamodeld in Sources */,
 				3DDB26C921EBF87E00388AEE /* PostWriterViewController.swift in Sources */,
+				3DACAAD221EE9D5D00309A75 /* PostSectionWriterTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

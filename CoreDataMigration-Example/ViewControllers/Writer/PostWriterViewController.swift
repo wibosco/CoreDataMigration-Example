@@ -9,63 +9,72 @@
 import UIKit
 import CoreData
 
-class PostWriterViewController: UIViewController {
-
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var bodyTextView: UITextView!
+class PostWriterViewController: UITableViewController, PostSectionWriterTableViewCellDelegate {
+    
+    var contentSectionViewModels = [PostSectionWriterTableViewCellViewModel]()
     
     // MARK: - ViewLifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
-        
-        titleTextField.text = nil
-        bodyTextView.text = nil
+        tableView.rowHeight = 220.0
+        tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        titleTextField.becomeFirstResponder()
+        addNewSectionToTableView()
     }
     
-    // MARK: - Keyboard
+    // MARK: - UITableViewDataSource
     
-    @objc func keyboardWillAppear(_ notification: NSNotification) {
-        let keyboardRect = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        let rect = bodyTextView.convert(keyboardRect, from: nil)
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return contentSectionViewModels.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let contentSectionViewModel = contentSectionViewModels[indexPath.row]
         
-        bodyTextView.contentInset.bottom = rect.size.height
-        bodyTextView.scrollIndicatorInsets.bottom = rect.size.height
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostSectionTableViewCell", for: indexPath) as! PostSectionWriterTableViewCell
+        
+        cell.configure(withViewModel: contentSectionViewModel)
+        cell.delegate = self
+        
+        return cell
     }
     
     // MARK: - ButtonActions
     
     @IBAction func saveButtonPressed(_ sender: Any) {
-        let title = titleTextField.text
-        let body = bodyTextView.text
+        view.endEditing(true)
+        
         DispatchQueue.global(qos: .userInitiated).async {
             let context = CoreDataManager.shared.backgroundContext
             context.performAndWait {
                 let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
                 post.postID = UUID().uuidString
                 post.date = Date()
+                post.hexColor = UIColor.randomPastelColor.hexString
                 
-                let titleContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: context) as! Content
-                titleContent.content = title
-                titleContent.hexColor = UIColor.random.hexString
-
-                post.title = titleContent
+                for (index, viewModel) in self.contentSectionViewModels.enumerated() {
+                    guard viewModel.title.count > 0 || viewModel.body.count > 0 else {
+                        continue
+                    }
+                    
+                    let section = NSEntityDescription.insertNewObject(forEntityName: "Section", into: context) as! Section
+                    section.title = viewModel.title
+                    section.body = viewModel.body
+                    section.index = Int16(index)
+                    
+                    section.post = post
+                    post.addToSections(section)
+                }
                 
-                let bodyContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: context) as! Content
-                bodyContent.content = body
-                bodyContent.hexColor = UIColor.random.hexString
-                
-                post.body = bodyContent
-                
-                try? context.save()
+                if post.sections?.count ?? 0 > 0 {
+                    try? context.save()
+                }
                 
                 DispatchQueue.main.async {
                     self.dismiss(animated: true, completion: nil)
@@ -74,7 +83,53 @@ class PostWriterViewController: UIViewController {
         }
     }
     
+    @IBAction func addSectionButtonPressed(_ sender: Any) {
+        view.endEditing(true)
+        addNewSectionToTableView()
+        scrollToLastSection()
+    }
+    
     @IBAction func cancelButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Section
+    
+    func addNewSectionToTableView() {
+        let viewModel =  PostSectionWriterTableViewCellViewModel(title: "", body: "")
+        contentSectionViewModels.append(viewModel)
+        
+        tableView.reloadData()
+    }
+    
+    func scrollToLastSection() {
+        let lastIndex = (contentSectionViewModels.count - 1)
+        let lastIndexPath = IndexPath(item: lastIndex, section: 0)
+        
+        tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
+    }
+    
+    // MARK: - PostSectionWriterTableViewCellDelegate
+    
+    func didSetTitle(cell: PostSectionWriterTableViewCell, to title: String) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        var viewModel = contentSectionViewModels[indexPath.row]
+        viewModel.title = title
+        
+        contentSectionViewModels[indexPath.row] = viewModel
+    }
+    
+    func didSetBody(cell: PostSectionWriterTableViewCell, to body: String) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        var viewModel = contentSectionViewModels[indexPath.row]
+        viewModel.body = body
+        
+        contentSectionViewModels[indexPath.row] = viewModel
     }
 }

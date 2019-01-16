@@ -43,7 +43,7 @@ class PostsViewController: UITableViewController {
             if let postViewCcontroller = segue.destination as? PostViewerViewController, let tableViewCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: tableViewCell) {
                 let post = posts[indexPath.row]
                 let viewModel = postViewerViewModel(forPost: post)
-                postViewCcontroller.viewModel = viewModel
+                postViewCcontroller.configure(withViewModel: viewModel)
             }
         }
     }
@@ -83,16 +83,21 @@ class PostsViewController: UITableViewController {
     // MARK: - ViewModels
     
     private func cellViewModel(forPost post: Post) -> PostTableViewCellViewModel {
-        let backgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
+        let backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!) ?? UIColor.white
         let formattedDate = dateFormatter.string(from: post.date!)
+        let typedSections = post.sections as! Set<Section>
+        let firstSection = typedSections.sorted { $0.index < $1.index }.first!
+        let preview = firstSection.title!.count > 0 ? firstSection.title! : firstSection.body!
         
-        return PostTableViewCellViewModel(title: post.title!.content!, date: formattedDate, backgroundColor: backgroundColor)
+        return PostTableViewCellViewModel(preview: preview, date: formattedDate, backgroundColor: backgroundColor)
     }
     
     private func postViewerViewModel(forPost post: Post) -> PostViewerViewModel {
-        let titleBackgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
-        let bodyBackgroundColor = UIColor.colorWithHex(hexColor: post.title!.hexColor!) ?? UIColor.white
+        let backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!) ?? UIColor.white
+        let typedSections = post.sections as! Set<Section>
         
-        return PostViewerViewModel(postID: post.postID!, title: post.title!.content!, body: post.body!.content!, titleBackgroundColor: titleBackgroundColor, bodyBackgroundColor: bodyBackgroundColor)
+        let sections = typedSections.sorted { $0.index < $1.index }.map { PostViewerSectionViewModel(title: $0.title!, body: $0.body!) }
+        
+        return PostViewerViewModel(postID: post.postID!, sections: sections, backgroundColor: backgroundColor)
     }
 }

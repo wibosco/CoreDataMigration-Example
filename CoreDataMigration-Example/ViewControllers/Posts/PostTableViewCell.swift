@@ -10,7 +10,7 @@ import UIKit
 
 struct PostTableViewCellViewModel {
     
-    let title: String
+    let preview: String
     let date: String
     let backgroundColor: UIColor
 }
@@ -23,7 +23,7 @@ class PostTableViewCell: UITableViewCell {
     // MARK: - Configure
     
     func configure(withViewModel viewModel: PostTableViewCellViewModel) {
-        contentLabel.text = viewModel.title
+        contentLabel.text = viewModel.preview
         dateLabel.text = viewModel.date
         contentView.backgroundColor = viewModel.backgroundColor
     }

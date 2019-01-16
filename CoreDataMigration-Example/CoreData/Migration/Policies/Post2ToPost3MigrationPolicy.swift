@@ -10,27 +10,25 @@ import CoreData
 
 final class Post2ToPost3MigrationPolicy: NSEntityMigrationPolicy {
     
-    override func createDestinationInstances(forSource sInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
-        try super.createDestinationInstances(forSource: sInstance, in: mapping, manager: manager)
+    override func createDestinationInstances(forSource sourceInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
+        try super.createDestinationInstances(forSource: sourceInstance, in: mapping, manager: manager)
 
-        guard let destinationPost = manager.destinationInstances(forEntityMappingName: mapping.name, sourceInstances: [sInstance]).first else {
+        guard let destinationPost = manager.destinationInstances(forEntityMappingName: mapping.name, sourceInstances: [sourceInstance]).first else {
             fatalError("was expected a post")
         }
         
-        let sourceBody = sInstance.value(forKey: "content") as? String
-        let sourceTitle = sourceBody?.prefix(80)
-        let sourceHexColor = sInstance.value(forKey: "hexColor")
+        let sourceBody = sourceInstance.value(forKey: "content") as? String
+        let sourceTitle = sourceBody?.prefix(4).appending("...")
         
-        let titleContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: destinationPost.managedObjectContext!)
-        titleContent.setValue(sourceTitle, forKey: "content")
-        titleContent.setValue(sourceHexColor, forKey: "hexColor")
-        titleContent.setValue(destinationPost, forKey: "post")
-        destinationPost.setValue(titleContent, forKey: "title")
+        let section = NSEntityDescription.insertNewObject(forEntityName: "Section", into: destinationPost.managedObjectContext!)
+        section.setValue(sourceTitle, forKey: "title")
+        section.setValue(sourceBody, forKey: "body")
+        section.setValue(destinationPost, forKey: "post")
+        section.setValue(0, forKey: "index")
         
-        let bodyContent = NSEntityDescription.insertNewObject(forEntityName: "Content", into: destinationPost.managedObjectContext!)
-        bodyContent.setValue(sourceBody, forKey: "content")
-        bodyContent.setValue(sourceHexColor, forKey: "hexColor")
-        bodyContent.setValue(destinationPost, forKey: "post")
-        destinationPost.setValue(bodyContent, forKey: "body")
+        var sections = Set<NSManagedObject>()
+        sections.insert(section)
+
+        destinationPost.setValue(sections, forKey: "sections")
     }
 }
