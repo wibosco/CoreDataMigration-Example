@@ -2,3 +2,5 @@
 
 # CoreDataMigration-Example
 An example project showing how we can implement data migration using NSPersistentContainer http://williamboles.me/step-by-step-core-data-migration/
+
+**This solution is no longer maintained, head over to https://williamboles.me/progressive-core-data-migration/ to see the post about Core Data migration and checkout https://github.com/wibosco/CoreDataMigrationRevised-Example to see it's accompanying example.**
