@@ -15,7 +15,8 @@ class PostsViewController: UITableViewController {
     
     lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
         
         return dateFormatter
     }()
@@ -26,6 +27,7 @@ class PostsViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.rowHeight = 80.0
+        tableView.separatorColor = UIColor.clear
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,47 +36,28 @@ class PostsViewController: UITableViewController {
         loadData()
     }
     
-    // MARK: - ButtonActions
+    // MARK: - Segue
     
-    @IBAction func addButtonPressed(_ sender: Any) {
-        addPost {
-            self.loadData()
-        }
-    }
-    
-    // MARK: - Post
-    
-    func addPost(completion: @escaping () -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let context = CoreDataManager.shared.backgroundContext
-            context.performAndWait {
-                let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
-                post.postID = UUID().uuidString
-                post.date = Date()
-                
-                let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: context) as! Color
-                color.colorID = UUID().uuidString
-                color.hex = UIColor.random.hexString
-                
-                post.color = color
-                
-                try! context.save()
-                
-                DispatchQueue.main.async {
-                    completion()
-                }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Viewer" {
+            if let postViewCcontroller = segue.destination as? PostViewerViewController, let tableViewCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: tableViewCell) {
+                let post = posts[indexPath.row]
+                let viewModel = postViewerViewModel(forPost: post)
+                postViewCcontroller.configure(withViewModel: viewModel)
             }
         }
     }
     
     // MARK: - Load
     
-    func loadData() {
+    private func loadData() {
         let context = CoreDataManager.shared.mainContext
         let request = NSFetchRequest<Post>.init(entityName: "Post")
         let dateSort = NSSortDescriptor(key: "date", ascending: false)
+        let predicate = NSPredicate(format: "softDeleted == NO")
         
         request.sortDescriptors = [dateSort]
+        request.predicate = predicate
         posts = try! context.fetch(request)
         
         tableView.reloadData()
@@ -91,10 +74,30 @@ class PostsViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         
-        cell.postIDLabel.text = post.postID
-        cell.dateLabel.text = dateFormatter.string(from: post.date!)
-        cell.contentView.backgroundColor = UIColor.colorWithHex(hexColor: post.color!.hex!)
+        let viewModel = cellViewModel(forPost: post)
+        cell.configure(withViewModel: viewModel)
         
         return cell
+    }
+    
+    // MARK: - ViewModels
+    
+    private func cellViewModel(forPost post: Post) -> PostTableViewCellViewModel {
+        let backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!) ?? UIColor.white
+        let formattedDate = dateFormatter.string(from: post.date!)
+        let typedSections = post.sections as! Set<Section>
+        let firstSection = typedSections.sorted { $0.index < $1.index }.first!
+        let preview = firstSection.title!.count > 0 ? firstSection.title! : firstSection.body!
+        
+        return PostTableViewCellViewModel(preview: preview, date: formattedDate, backgroundColor: backgroundColor)
+    }
+    
+    private func postViewerViewModel(forPost post: Post) -> PostViewerViewModel {
+        let backgroundColor = UIColor.colorWithHex(hexColor: post.hexColor!) ?? UIColor.white
+        let typedSections = post.sections as! Set<Section>
+        
+        let sections = typedSections.sorted { $0.index < $1.index }.map { PostViewerSectionViewModel(title: $0.title!, body: $0.body!) }
+        
+        return PostViewerViewModel(postID: post.postID!, sections: sections, backgroundColor: backgroundColor)
     }
 }

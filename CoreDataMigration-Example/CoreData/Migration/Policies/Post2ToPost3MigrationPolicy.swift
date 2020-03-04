@@ -10,17 +10,25 @@ import CoreData
 
 final class Post2ToPost3MigrationPolicy: NSEntityMigrationPolicy {
     
-    override func createDestinationInstances(forSource sInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
-        try super.createDestinationInstances(forSource: sInstance, in: mapping, manager: manager)
+    override func createDestinationInstances(forSource sourceInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
+        try super.createDestinationInstances(forSource: sourceInstance, in: mapping, manager: manager)
 
-        guard let destinationPost = manager.destinationInstances(forEntityMappingName: mapping.name, sourceInstances: [sInstance]).first else {
+        guard let destinationPost = manager.destinationInstances(forEntityMappingName: mapping.name, sourceInstances: [sourceInstance]).first else {
             fatalError("was expected a post")
         }
         
-        let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: destinationPost.managedObjectContext!)
-        color.setValue(UUID().uuidString, forKey: "colorID")
-        color.setValue(sInstance.value(forKey: "hexColor"), forKey: "hex")
+        let sourceBody = sourceInstance.value(forKey: "content") as? String
+        let sourceTitle = sourceBody?.prefix(4).appending("...")
         
-        destinationPost.setValue(color, forKey: "color")
+        let section = NSEntityDescription.insertNewObject(forEntityName: "Section", into: destinationPost.managedObjectContext!)
+        section.setValue(sourceTitle, forKey: "title")
+        section.setValue(sourceBody, forKey: "body")
+        section.setValue(destinationPost, forKey: "post")
+        section.setValue(0, forKey: "index")
+        
+        var sections = Set<NSManagedObject>()
+        sections.insert(section)
+
+        destinationPost.setValue(sections, forKey: "sections")
     }
 }

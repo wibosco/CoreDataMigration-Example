@@ -11,12 +11,15 @@ import CoreData
 
 class CoreDataManager {
     
-    let migrator: CoreDataMigrator
+    let migrator: CoreDataMigratorProtocol
+    private let storeType: String
     
-    lazy var persistentContainer: NSPersistentContainer! = {
+    lazy var persistentContainer: NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "CoreDataMigration_Example")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
+        description?.shouldMigrateStoreAutomatically = false
+        description?.type = storeType
         
         return persistentContainer
     }()
@@ -41,7 +44,8 @@ class CoreDataManager {
     
     // MARK: - Init
     
-    init(migrator: CoreDataMigrator = CoreDataMigrator()) {
+    init(storeType: String = NSSQLiteStoreType, migrator: CoreDataMigratorProtocol = CoreDataMigrator()) {
+        self.storeType = storeType
         self.migrator = migrator
     }
     
@@ -72,9 +76,9 @@ class CoreDataManager {
             fatalError("persistentContainer was not set up properly")
         }
         
-        if migrator.requiresMigration(at: storeURL) {
+        if migrator.requiresMigration(at: storeURL, toVersion: CoreDataMigrationVersion.latest) {
             DispatchQueue.global(qos: .userInitiated).async {
-                self.migrator.migrateStore(at: storeURL)
+                self.migrator.migrateStore(at: storeURL, toVersion: CoreDataMigrationVersion.latest)
                 
                 DispatchQueue.main.async {
                     completion()

@@ -23,29 +23,22 @@ extension UIColor {
     }
     
     static func colorWithHex(hexColor: String) -> UIColor? {
-        let red: CGFloat
-        let green: CGFloat
-        let blue: CGFloat
-        let alpha: CGFloat
-        
-        var color: UIColor? = nil
-        
-        if hexColor.characters.count == 6 {
-            
-            let scanner = Scanner(string: hexColor)
-            var hexNumber: UInt64 = 0
-            
-            if scanner.scanHexInt64(&hexNumber) {
-                
-                red = CGFloat((hexNumber & 0xff0000) >> 16) / 255
-                green = CGFloat((hexNumber & 0x00ff00) >> 8) / 255
-                blue = CGFloat(hexNumber & 0x0000ff) / 255
-                alpha = 1.0
-                
-                color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
-            }
+        guard hexColor.count == 6 else {
+            return nil
         }
         
-        return color
+        let scanner = Scanner(string: hexColor)
+        var hexNumber: UInt64 = 0
+        
+        guard scanner.scanHexInt64(&hexNumber) else {
+            return nil
+        }
+        
+        let red = CGFloat((hexNumber & 0xff0000) >> 16) / 255
+        let green = CGFloat((hexNumber & 0x00ff00) >> 8) / 255
+        let blue = CGFloat(hexNumber & 0x0000ff) / 255
+        let alpha = CGFloat(1)
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
