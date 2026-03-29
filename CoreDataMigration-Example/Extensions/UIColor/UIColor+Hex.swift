@@ -30,7 +30,7 @@ extension UIColor {
         
         var color: UIColor? = nil
         
-        if hexColor.characters.count == 6 {
+        if hexColor.count == 6 {
             
             let scanner = Scanner(string: hexColor)
             var hexNumber: UInt64 = 0

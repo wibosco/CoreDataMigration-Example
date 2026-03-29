@@ -43,12 +43,13 @@ class CoreDataMigrator {
     }
     
     func migrateStore(from sourceURL: URL, to targetURL: URL, targetVersion: CoreDataMigrationModel) {
-        guard let sourceMigrationModel = CoreDataMigrationSourceModel(storeURL: sourceURL as URL) else {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: sourceURL),
+              let sourceMigrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata) else {
             fatalError("Unknown store version at URL \(sourceURL)")
         }
-        
+
         forceWALCheckpointingForStore(at: sourceURL)
-        
+
         var currentURL = sourceURL
         let migrationSteps = sourceMigrationModel.migrationSteps(to: targetVersion)
         

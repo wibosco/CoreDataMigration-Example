@@ -13,16 +13,6 @@ import CoreData
 
 class CoreDataMigrationModelTests: XCTestCase {
     
-    // MARK: - Source
-    
-    func test_sourceInit_validStoreURL() {
-        let storeURL = Bundle(for: CoreDataMigrationModelTests.self).resourceURL!.appendingPathComponent("CoreDataMigration_Example_2.sqlite")
-        let coreDataMigrationModel = CoreDataMigrationSourceModel(storeURL: storeURL)
-        
-        XCTAssertNotNil(coreDataMigrationModel)
-        XCTAssertEqual(coreDataMigrationModel!.version.name, "CoreDataMigration_Example 2")
-    }
-    
     // MARK: - Steps
     
     func test_migrationSteps_singleStep() {

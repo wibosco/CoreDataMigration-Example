@@ -12,12 +12,9 @@ import CoreData
 @testable import CoreDataMigration_Example
 
 class TestingAppDelegate: NSObject, UIApplicationDelegate {
-    
     var window: UIWindow?
     
-    // MARK: - AppLifecycle
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         //Just some house keeping
         if let storeURL = CoreDataManager().persistentContainer.persistentStoreDescriptions.first?.url {
