@@ -52,7 +52,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - SingleStepMigrations
     
-    func test_individualStepMigration_1to2() {
+    func test_givenVersion1Store_whenMigratingToVersion2_thenStoreIsUpdated() {
         let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         let targetURL = sourceURL
         
@@ -66,7 +66,7 @@ class CoreDataMigratorTests: XCTestCase {
         XCTAssertTrue(modifiedDateAfterMigration.timeIntervalSince(modifiedDateBeforeMigration) > 0)
     }
     
-    func test_individualStepMigration_2to3() {
+    func test_givenVersion2Store_whenMigratingToVersion3_thenStoreIsUpdated() {
         let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_2.sqlite")
         let targetURL = sourceURL
         
@@ -80,7 +80,7 @@ class CoreDataMigratorTests: XCTestCase {
         XCTAssertTrue(modifiedDateAfterMigration.timeIntervalSince(modifiedDateBeforeMigration) > 0)
     }
     
-    func test_individualStepMigration_3to4() {
+    func test_givenVersion3Store_whenMigratingToVersion4_thenStoreIsUpdated() {
         let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let targetURL = sourceURL
         
@@ -96,7 +96,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - MultipleStepMigrations
     
-    func test_multipleStepMigration_1toCurrent() {
+    func test_givenVersion1Store_whenMigratingToCurrent_thenStoreIsUpdated() {
         let sourceURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         let targetURL = sourceURL
         
@@ -112,7 +112,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - MigrationRequired
     
-    func test_requiresMigration_true() {
+    func test_givenOldVersionStore_whenCheckingRequiresMigration_thenReturnsTrue() {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         
         let requiresMigration = sut.requiresMigration(at: storeURL)
@@ -120,7 +120,7 @@ class CoreDataMigratorTests: XCTestCase {
         XCTAssertTrue(requiresMigration)
     }
     
-    func test_requiresMigration_false() {
+    func test_givenCurrentVersionStore_whenCheckingRequiresMigration_thenReturnsFalse() {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let migrationModel = CoreDataMigrationModel(version: .version3)
         
@@ -131,7 +131,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - CheckPointing
     
-    func test_forceWALTransactions_success() {
+    func test_givenWALStore_whenForcingCheckpoint_thenWALFileIsRemovedAndStoreSizeIncreases() {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite")
         let walLocation = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_WAL.sqlite-wal")
         

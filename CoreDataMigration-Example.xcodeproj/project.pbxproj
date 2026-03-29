@@ -24,6 +24,7 @@
 		43370DB31F66E830006188EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D781F66E74A006188EC /* LaunchScreen.storyboard */; };
 		43370DB41F66E832006188EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43370D7A1F66E74A006188EC /* Main.storyboard */; };
 		43370DBE1F66F0DF006188EC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43370DBB1F66F0C0006188EC /* CoreDataManager.swift */; };
+		4343875D2F7963FF0041D11F /* CoreDataVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343875C2F7963FF0041D11F /* CoreDataVersion.swift */; };
 		4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */; };
 		4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4EF1F67E10700027D11 /* UIColor+Random.swift */; };
 		4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */; };
@@ -38,7 +39,8 @@
 		434FE74C2F795ACA00359208 /* CoreDataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7422F795ACA00359208 /* CoreDataMigratorTests.swift */; };
 		434FE74D2F795ADC00359208 /* TestingAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7372F795ACA00359208 /* TestingAppDelegate.swift */; };
 		434FE7502F795AFD00359208 /* CoreDataMigratorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */; };
-		434FE7532F795B5400359208 /* CoreDataMigrationModelSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7512F795B5400359208 /* CoreDataMigrationModelSpy.swift */; };
+		434FE7532F795B5400359208 /* StubCoreDataMigrationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */; };
+		43EC64232F79925F0055607E /* CoreDataVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC64222F79925E0055607E /* CoreDataVersionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,7 @@
 		43370D791F66E74A006188EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43370D7B1F66E74A006188EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43370DBB1F66F0C0006188EC /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		4343875C2F7963FF0041D11F /* CoreDataVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVersion.swift; sourceTree = "<group>"; };
 		4345D4ED1F67E0FE00027D11 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		4345D4EF1F67E10700027D11 /* UIColor+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
 		4345D4F41F67E1FC00027D11 /* CGFloat+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Random.swift"; sourceTree = "<group>"; };
@@ -87,10 +90,11 @@
 		434FE7412F795ACA00359208 /* CoreDataMigrationModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationModelTests.swift; sourceTree = "<group>"; };
 		434FE7422F795ACA00359208 /* CoreDataMigratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigratorTests.swift; sourceTree = "<group>"; };
 		434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigratorMock.swift; sourceTree = "<group>"; };
-		434FE7512F795B5400359208 /* CoreDataMigrationModelSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationModelSpy.swift; sourceTree = "<group>"; };
+		434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCoreDataMigrationModel.swift; sourceTree = "<group>"; };
 		43AB8AE51F66E6A5003153B3 /* CoreDataMigration-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CoreDataMigration-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43AB8AFC1F66E6A5003153B3 /* CoreDataMigration-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataMigration-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43AB8B021F66E6A5003153B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43EC64222F79925E0055607E /* CoreDataVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVersionTests.swift; sourceTree = "<group>"; };
 		43FBB4421F6C16FB0090C536 /* CoreDataMigration-ExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreDataMigration-ExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,6 +122,7 @@
 				431DCEB01F67EE2600CF6316 /* CoreDataMigrationModel.swift */,
 				431DCEB11F67EE2600CF6316 /* CoreDataMigrationStep.swift */,
 				431DCEB21F67EE2600CF6316 /* CoreDataMigrator.swift */,
+				4343875C2F7963FF0041D11F /* CoreDataVersion.swift */,
 				431DCEB31F67EE2600CF6316 /* Mappings */,
 				431DCED01F68156B00CF6316 /* Policies */,
 			);
@@ -253,7 +258,7 @@
 			children = (
 				434FE7372F795ACA00359208 /* TestingAppDelegate.swift */,
 				434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */,
-				434FE7512F795B5400359208 /* CoreDataMigrationModelSpy.swift */,
+				434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -284,6 +289,7 @@
 				434FE7402F795ACA00359208 /* CoreDataManagerTests.swift */,
 				434FE7412F795ACA00359208 /* CoreDataMigrationModelTests.swift */,
 				434FE7422F795ACA00359208 /* CoreDataMigratorTests.swift */,
+				43EC64222F79925E0055607E /* CoreDataVersionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -448,6 +454,7 @@
 				431DCECB1F67F93000CF6316 /* AppLoadingViewController.swift in Sources */,
 				431DCED61F68315900CF6316 /* Migration2to3.xcmappingmodel in Sources */,
 				4345D4F51F67E1FC00027D11 /* CGFloat+Random.swift in Sources */,
+				4343875D2F7963FF0041D11F /* CoreDataVersion.swift in Sources */,
 				432EA5591F6C552800EFE008 /* NSPersistentStoreCoordinator+SQLite.swift in Sources */,
 				4345D4F01F67E10700027D11 /* UIColor+Random.swift in Sources */,
 				4345D4EE1F67E0FE00027D11 /* UIColor+Hex.swift in Sources */,
@@ -470,8 +477,9 @@
 				434FE7502F795AFD00359208 /* CoreDataMigratorMock.swift in Sources */,
 				434FE74A2F795ACA00359208 /* TestingAppDelegate.swift in Sources */,
 				434FE74B2F795ACA00359208 /* CoreDataManagerTests.swift in Sources */,
-				434FE7532F795B5400359208 /* CoreDataMigrationModelSpy.swift in Sources */,
+				434FE7532F795B5400359208 /* StubCoreDataMigrationModel.swift in Sources */,
 				434FE74C2F795ACA00359208 /* CoreDataMigratorTests.swift in Sources */,
+				43EC64232F79925F0055607E /* CoreDataVersionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

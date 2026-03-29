@@ -9,44 +9,7 @@
 import Foundation
 import CoreData
 
-enum CoreDataVersion: Int {
-    case version1 = 1
-    case version2
-    case version3
-    case version4
-    
-    // MARK: - Accessors
-    
-    var name: String {
-        if rawValue == 1 {
-            return "CoreDataMigration_Example"
-        } else {
-            return "CoreDataMigration_Example \(rawValue)"
-        }
-    }
-    
-    static var all: [CoreDataVersion] {
-        var versions = [CoreDataVersion]()
-        
-        for rawVersionValue in 1...1000 { // A bit of a hack here to avoid manual mapping
-            if let version = CoreDataVersion(rawValue: rawVersionValue) {
-                versions.append(version)
-                continue
-            }
-            
-            break
-        }
-        
-        return versions.reversed()
-    }
-    
-    static var latest: CoreDataVersion {
-        return all.first!
-    }
-}
-
 class CoreDataMigrationModel {
-    
     let version: CoreDataVersion
     
     var modelBundle: Bundle {
@@ -60,7 +23,7 @@ class CoreDataMigrationModel {
     static var all: [CoreDataMigrationModel] {
         var migrationModels = [CoreDataMigrationModel]()
         
-        for version in CoreDataVersion.all {
+        for version in CoreDataVersion.allCases {
             migrationModels.append(CoreDataMigrationModel(version: version))
         }
         
@@ -93,8 +56,8 @@ class CoreDataMigrationModel {
     // MARK: - Model
     
     func managedObjectModel() -> NSManagedObjectModel {
-        let omoURL = modelBundle.url(forResource: version.name, withExtension: "omo", subdirectory: modelDirectoryName) // optimized model file
-        let momURL = modelBundle.url(forResource: version.name, withExtension: "mom", subdirectory: modelDirectoryName)
+        let omoURL = modelBundle.url(forResource: version.rawValue, withExtension: "omo", subdirectory: modelDirectoryName) // optimized model file
+        let momURL = modelBundle.url(forResource: version.rawValue, withExtension: "mom", subdirectory: modelDirectoryName)
         
         guard let url = omoURL ?? momURL else {
             fatalError("Unable to find model in bundle")

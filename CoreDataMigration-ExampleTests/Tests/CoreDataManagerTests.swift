@@ -33,52 +33,57 @@ class CoreDataManagerTests: XCTestCase {
 
     // MARK: - Setup
     
-    func test_setup_loadsStore() {
-        let promise = expectation(description: "calls back")
+    func test_givenNoMigrationRequired_whenSetup_thenLoadsStore() {
+        migrator.requiresMigrationToBeReturned = false
+        
+        let expectation = expectation(description: "calls back")
         sut.setup {
             XCTAssertTrue(self.sut.persistentContainer.persistentStoreCoordinator.persistentStores.count > 0)
             
-            promise.fulfill()
+            expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10) { error in
-            if let error = error {
-                print("Timed out: \(String(describing: error))")
-            }
-        }
+        waitForExpectations(timeout: 10)
     }
 
-    func test_setup_checksIfMigrationRequired() {
-        let promise = expectation(description: "calls back")
+    func test_givenNoMigrationRequired_whenSetup_thenChecksIfMigrationRequiredButDoesNotMigrate() {
+        migrator.requiresMigrationToBeReturned = false
+        
+        let expectation = expectation(description: "calls back")
         sut.setup {
-            XCTAssertTrue(self.migrator.requiresMigrationWasCalled)
-            XCTAssertFalse(self.migrator.migrateStoreWasCalled)
+            let hasRequiresMigrationEvent = self.migrator.events.contains { event in
+                if case .requiresMigration = event { return true }
+                return false
+            }
+            let hasMigrateStoreEvent = self.migrator.events.contains { event in
+                if case .migrateStore = event { return true }
+                return false
+            }
             
-            promise.fulfill()
+            XCTAssertTrue(hasRequiresMigrationEvent)
+            XCTAssertFalse(hasMigrateStoreEvent)
+            
+            expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10) { error in
-            if let error = error {
-                print("Timed out: \(String(describing: error))")
-            }
-        }
+        waitForExpectations(timeout: 10)
     }
     
-    func test_setup_migrate() {
+    func test_givenMigrationRequired_whenSetup_thenMigratesStore() {
         migrator.requiresMigrationToBeReturned = true
         
-        let promise = expectation(description: "calls back")
+        let expectation = expectation(description: "calls back")
         sut.setup {
-            XCTAssertTrue(self.migrator.migrateStoreWasCalled)
+            let hasMigrateStoreEvent = self.migrator.events.contains { event in
+                if case .migrateStore = event { return true }
+                return false
+            }
             
-            promise.fulfill()
+            XCTAssertTrue(hasMigrateStoreEvent)
+            
+            expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10) { error in
-            if let error = error {
-                print("Timed out: \(String(describing: error))")
-            }
-        }
+        waitForExpectations(timeout: 10)
     }
-    
 }

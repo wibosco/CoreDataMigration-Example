@@ -12,19 +12,22 @@ import CoreData
 @testable import CoreDataMigration_Example
 
 class CoreDataMigratorMock: CoreDataMigrator {
+    enum Event {
+        case requiresMigration(URL, CoreDataMigrationModel)
+        case migrateStore(URL)
+    }
     
-    var requiresMigrationWasCalled = false
-    var migrateStoreWasCalled = false
+    private(set) var events: [Event] = []
     
-    var requiresMigrationToBeReturned = false
+    var requiresMigrationToBeReturned: Bool!
     
     override func requiresMigration(at: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
-        requiresMigrationWasCalled = true
+        events.append(.requiresMigration(at, currentMigrationModel))
         
         return requiresMigrationToBeReturned
     }
     
     override func migrateStore(at: URL) {
-        migrateStoreWasCalled = true
+        events.append(.migrateStore(at))
     }
 }

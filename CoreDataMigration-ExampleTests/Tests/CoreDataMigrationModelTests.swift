@@ -13,105 +13,199 @@ import CoreData
 
 class CoreDataMigrationModelTests: XCTestCase {
     
-    // MARK: - Steps
+    // MARK: - Tests
     
-    func test_migrationSteps_singleStep() {
-        let version2 = CoreDataMigrationModel(version: .version2)
-        let version3 = CoreDataMigrationModel(version: .version3)
+    // MARK: - Current
+    
+    func test_givenLatestVersion_whenAccessingCurrent_thenReturnsLatestVersion() {
+        let currentModel = CoreDataMigrationModel.current
         
-        let steps = version2.migrationSteps(to: version3)
-        
-        let firstStep = steps.first
-        
-        let sourceModel = version2.managedObjectModel()
-        let destinationModel = version3.managedObjectModel()
-        
-        XCTAssertEqual(steps.count, 1)
-        XCTAssertEqual(firstStep?.source, sourceModel)
-        XCTAssertEqual(firstStep?.destination, destinationModel)
+        XCTAssertEqual(currentModel.version, CoreDataVersion.latest)
     }
     
-    func test_migrationSteps_multipleSteps() {
-        let version1 = CoreDataMigrationModel(version: .version1)
-        let version2 = CoreDataMigrationModel(version: .version2)
-        let version3 = CoreDataMigrationModel(version: .version3)
+    // MARK: - All
+    
+    func test_givenAllVersionsExist_whenAccessingAll_thenReturnsModelForEveryVersion() {
+        let allModels = CoreDataMigrationModel.all
         
-        let steps = version1.migrationSteps(to: version3)
-        
-        let lastStep = steps.last
-        
-        let sourceModel = version2.managedObjectModel()
-        let destinationModel = version3.managedObjectModel()
-        
-        XCTAssertEqual(steps.count, 2)
-        XCTAssertEqual(lastStep?.source, sourceModel)
-        XCTAssertEqual(lastStep?.destination, destinationModel)
+        XCTAssertEqual(allModels.count, CoreDataVersion.allCases.count)
     }
     
-    func test_migrationSteps_toCurrent() {
-        let version1 = CoreDataMigrationModel(version: .version1)
-        let currentVersion = CoreDataMigrationModel.current
+    func test_givenAllVersionsExist_whenAccessingAll_thenModelsAreInVersionOrder() {
+        let allModels = CoreDataMigrationModel.all
+        let allVersions = allModels.map { $0.version }
         
-        let steps = version1.migrationSteps(to: currentVersion)
-        
-        XCTAssertEqual(steps.count, (CoreDataVersion.all.count - 1))
-    }
-    
-    func test_migrationSteps_cannotMigrateToSelf() {
-        let version3 = CoreDataMigrationModel(version: .version3)
-        
-        let steps = version3.migrationSteps(to: version3)
-        
-        XCTAssertEqual(steps.count, 0)
-    }
-    
-    // MARK: - Model
-    
-    func test_retrieveModel_findAndLoad() {
-         let version3 = CoreDataMigrationModel(version: .version3)
-        
-        let managedObjectModel = version3.managedObjectModel()
-        
-        XCTAssertNotNil(managedObjectModel)
+        XCTAssertEqual(allVersions, CoreDataVersion.allCases)
     }
     
     // MARK: - Successor
     
-    func test_fromVersion1_manualMapping() {
-        let version = CoreDataMigrationModelSpy(version: .version1)
+    func test_givenVersion1_whenAccessingSuccessor_thenReturnsVersion2() {
+        let sut = CoreDataMigrationModel(version: .version1)
         
-        let mappingModel = version.mappingModelToSuccessor()
-        
-        XCTAssertNotNil(mappingModel)
-        XCTAssertTrue(version.customMappingModelWasCalled)
+        XCTAssertEqual(sut.successor?.version, .version2)
     }
     
-    func test_fromVersion2_manualMapping() {
-        let version = CoreDataMigrationModelSpy(version: .version2)
+    func test_givenVersion2_whenAccessingSuccessor_thenReturnsVersion3() {
+        let sut = CoreDataMigrationModel(version: .version2)
         
-        let mappingModel = version.mappingModelToSuccessor()
-        
-        XCTAssertNotNil(mappingModel)
-        XCTAssertTrue(version.customMappingModelWasCalled)
+        XCTAssertEqual(sut.successor?.version, .version3)
     }
     
-    func test_fromVersion3_inferredMapping() {
-        let version = CoreDataMigrationModelSpy(version: .version3)
+    func test_givenVersion3_whenAccessingSuccessor_thenReturnsVersion4() {
+        let sut = CoreDataMigrationModel(version: .version3)
         
-        let mappingModel = version.mappingModelToSuccessor()
-        
-        XCTAssertNotNil(mappingModel)
-        XCTAssertTrue(version.inferredMappingModelWasCalled)
+        XCTAssertEqual(sut.successor?.version, .version4)
     }
     
-    // MARK: - Current
+    func test_givenVersion4_whenAccessingSuccessor_thenReturnsNil() {
+        let sut = CoreDataMigrationModel(version: .version4)
+        
+        XCTAssertNil(sut.successor)
+    }
     
-    func test_current() {
-        let lastVersion = CoreDataVersion.all.first!
+    // MARK: - ManagedObjectModel
+    
+    func test_givenValidVersion_whenLoadingManagedObjectModel_thenReturnsModel() {
+        let sut = CoreDataMigrationModel(version: .version3)
         
-        let expectedModel = CoreDataMigrationModel(version: lastVersion)
-        let currentModel = CoreDataMigrationModel.current
+        let managedObjectModel = sut.managedObjectModel()
         
-        XCTAssertEqual(expectedModel.version, currentModel.version)
+        XCTAssertNotNil(managedObjectModel)
+    }
+    
+    func test_givenTwoInstancesOfSameVersion_whenLoadingManagedObjectModel_thenModelsAreEqual() {
+        let first = CoreDataMigrationModel(version: .version2)
+        let second = CoreDataMigrationModel(version: .version2)
+        
+        XCTAssertEqual(first.managedObjectModel(), second.managedObjectModel())
+    }
+    
+    func test_givenDifferentVersions_whenLoadingManagedObjectModel_thenModelsAreNotEqual() {
+        let version1 = CoreDataMigrationModel(version: .version1)
+        let version2 = CoreDataMigrationModel(version: .version2)
+        
+        XCTAssertNotEqual(version1.managedObjectModel(), version2.managedObjectModel())
+    }
+    
+    // MARK: - MappingModelToSuccessor
+    
+    func test_givenVersion1_whenRequestingMappingToSuccessor_thenUsesCustomMapping() {
+        let sut = StubCoreDataMigrationModel(version: .version1)
+        sut.customMappingModelReturnValue = NSMappingModel()
+        
+        let mappingModel = sut.mappingModelToSuccessor()
+        
+        XCTAssertNotNil(mappingModel)
+        XCTAssertEqual(sut.events.count, 1)
+        
+        if case .customMappingModel = sut.events.first {} else {
+            XCTFail("Expected customMappingModel event")
+        }
+    }
+    
+    func test_givenVersion2_whenRequestingMappingToSuccessor_thenUsesCustomMapping() {
+        let sut = StubCoreDataMigrationModel(version: .version2)
+        sut.customMappingModelReturnValue = NSMappingModel()
+        
+        let mappingModel = sut.mappingModelToSuccessor()
+        
+        XCTAssertNotNil(mappingModel)
+        XCTAssertEqual(sut.events.count, 1)
+        
+        if case .customMappingModel = sut.events.first {} else {
+            XCTFail("Expected customMappingModel event")
+        }
+    }
+    
+    func test_givenVersion3_whenRequestingMappingToSuccessor_thenUsesInferredMapping() {
+        let sut = StubCoreDataMigrationModel(version: .version3)
+        sut.customMappingModelReturnValue = nil
+        sut.inferredMappingModel = NSMappingModel()
+        
+        let mappingModel = sut.mappingModelToSuccessor()
+        
+        XCTAssertNotNil(mappingModel)
+        XCTAssertEqual(sut.events.count, 2)
+        
+        if case .customMappingModel = sut.events.first {} else {
+            XCTFail("Expected customMappingModel event first")
+        }
+        
+        if case .inferredMappingModel = sut.events.last {} else {
+            XCTFail("Expected inferredMappingModel event second")
+        }
+    }
+    
+    func test_givenVersion4_whenRequestingMappingToSuccessor_thenReturnsNil() {
+        let sut = CoreDataMigrationModel(version: .version4)
+        
+        let mappingModel = sut.mappingModelToSuccessor()
+        
+        XCTAssertNil(mappingModel)
+    }
+    
+    // MARK: - MigrationSteps
+    
+    func test_givenAdjacentVersions_whenCalculatingMigrationSteps_thenReturnsSingleStep() {
+        let source = CoreDataMigrationModel(version: .version2)
+        let destination = CoreDataMigrationModel(version: .version3)
+        
+        let steps = source.migrationSteps(to: destination)
+        
+        XCTAssertEqual(steps.count, 1)
+        XCTAssertEqual(steps.first?.source, source.managedObjectModel())
+        XCTAssertEqual(steps.first?.destination, destination.managedObjectModel())
+    }
+    
+    func test_givenNonAdjacentVersions_whenCalculatingMigrationSteps_thenReturnsMultipleSteps() {
+        let source = CoreDataMigrationModel(version: .version1)
+        let destination = CoreDataMigrationModel(version: .version3)
+        
+        let steps = source.migrationSteps(to: destination)
+        
+        XCTAssertEqual(steps.count, 2)
+        XCTAssertEqual(steps.first?.source, source.managedObjectModel())
+        XCTAssertEqual(steps.last?.destination, destination.managedObjectModel())
+    }
+    
+    func test_givenVersion1_whenMigratingToCurrent_thenReturnsStepForEachVersionGap() {
+        let source = CoreDataMigrationModel(version: .version1)
+        let destination = CoreDataMigrationModel.current
+        
+        let steps = source.migrationSteps(to: destination)
+        
+        XCTAssertEqual(steps.count, CoreDataVersion.allCases.count - 1)
+    }
+    
+    func test_givenSameVersion_whenCalculatingMigrationSteps_thenReturnsEmptyArray() {
+        let sut = CoreDataMigrationModel(version: .version3)
+        
+        let steps = sut.migrationSteps(to: sut)
+        
+        XCTAssertTrue(steps.isEmpty)
+    }
+    
+    func test_givenLatestVersion_whenCalculatingMigrationSteps_thenReturnsEmptyArray() {
+        let sut = CoreDataMigrationModel(version: .version4)
+        let destination = CoreDataMigrationModel(version: .version4)
+        
+        let steps = sut.migrationSteps(to: destination)
+        
+        XCTAssertTrue(steps.isEmpty)
+    }
+    
+    func test_givenMultipleSteps_whenCalculatingMigrationSteps_thenStepsAreChainedInOrder() {
+        let source = CoreDataMigrationModel(version: .version1)
+        let destination = CoreDataMigrationModel(version: .version4)
+        
+        let steps = source.migrationSteps(to: destination)
+        
+        XCTAssertEqual(steps.count, 3)
+        
+        // Each step's destination should match the next step's source
+        for i in 0..<(steps.count - 1) {
+            XCTAssertEqual(steps[i].destination, steps[i + 1].source)
+        }
     }
 }
