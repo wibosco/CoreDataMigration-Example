@@ -59,7 +59,7 @@ class CoreDataManager {
         migrateStoreIfNeeded {
             self.persistentContainer.loadPersistentStores { description, error in
                 guard error == nil else {
-                    fatalError("was unable to load store \(error!)")
+                    fatalError("Unable to load store \(error!)")
                 }
                 
                 completion()

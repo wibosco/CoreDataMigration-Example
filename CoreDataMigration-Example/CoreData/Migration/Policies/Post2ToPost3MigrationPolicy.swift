@@ -14,7 +14,7 @@ final class Post2ToPost3MigrationPolicy: NSEntityMigrationPolicy {
         try super.createDestinationInstances(forSource: sInstance, in: mapping, manager: manager)
 
         guard let destinationPost = manager.destinationInstances(forEntityMappingName: mapping.name, sourceInstances: [sInstance]).first else {
-            fatalError("was expected a post")
+            fatalError("Expected a post")
         }
         
         let color = NSEntityDescription.insertNewObject(forEntityName: "Color", into: destinationPost.managedObjectContext!)

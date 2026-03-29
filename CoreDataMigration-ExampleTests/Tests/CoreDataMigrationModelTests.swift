@@ -13,26 +13,6 @@ import CoreData
 
 class CoreDataMigrationModelTests: XCTestCase {
     
-    // MARK: - CustomClasses
-    
-    class CoreDataMigrationModelSpy: CoreDataMigrationModel {
-        
-        var inferredMappingModelWasCalled = false
-        var customMappingModelWasCalled = false
-        
-        override func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
-            inferredMappingModelWasCalled = true
-            
-            return NSMappingModel()
-        }
-        
-        override func customMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
-            customMappingModelWasCalled = true
-            
-            return NSMappingModel()
-        }
-    }
-    
     // MARK: - Source
     
     func test_sourceInit_validStoreURL() {

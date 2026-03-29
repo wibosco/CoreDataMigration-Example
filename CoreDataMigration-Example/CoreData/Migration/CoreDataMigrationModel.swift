@@ -71,12 +71,6 @@ class CoreDataMigrationModel {
         return CoreDataMigrationModel(version: CoreDataVersion.latest)
     }
     
-    /**
-     Determines the next model version from the current model version.
-     
-     NB: the next version migration is not always the next actual version. With
-     this solution we can skip "bad/corrupted" versions.
-     */
     var successor: CoreDataMigrationModel? {
         switch self.version {
         case .version1:
@@ -103,11 +97,11 @@ class CoreDataMigrationModel {
         let momURL = modelBundle.url(forResource: version.name, withExtension: "mom", subdirectory: modelDirectoryName)
         
         guard let url = omoURL ?? momURL else {
-            fatalError("unable to find model in bundle")
+            fatalError("Unable to find model in bundle")
         }
         
         guard let model = NSManagedObjectModel(contentsOf: url) else {
-            fatalError("unable to load model in bundle")
+            fatalError("Unable to load model in bundle")
         }
         
         return model
@@ -119,27 +113,8 @@ class CoreDataMigrationModel {
         guard let nextVersion = successor else {
             return nil
         }
-        
-        switch version {
-        case .version1, .version2: //manual mapped versions
-            guard let mapping = customMappingModel(to: nextVersion) else {
-                return nil
-            }
-            
-            return mapping
-        default:
-            return inferredMappingModel(to: nextVersion)
-        }
-    }
-    
-    func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
-        do {
-            let sourceModel = managedObjectModel()
-            let destinationModel = nextVersion.managedObjectModel()
-            return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
-        } catch {
-            fatalError("unable to generate inferred mapping model")
-        }
+
+        return customMappingModel(to: nextVersion) ?? inferredMappingModel(to: nextVersion)
     }
     
     func customMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
@@ -150,6 +125,16 @@ class CoreDataMigrationModel {
         }
         
         return mapping
+    }
+    
+    func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
+        do {
+            let sourceModel = managedObjectModel()
+            let destinationModel = nextVersion.managedObjectModel()
+            return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
+        } catch {
+            fatalError("Unable to generate inferred mapping model")
+        }
     }
     
     // MARK: - MigrationSteps

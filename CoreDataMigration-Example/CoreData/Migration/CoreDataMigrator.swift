@@ -44,7 +44,7 @@ class CoreDataMigrator {
     
     func migrateStore(from sourceURL: URL, to targetURL: URL, targetVersion: CoreDataMigrationModel) {
         guard let sourceMigrationModel = CoreDataMigrationSourceModel(storeURL: sourceURL as URL) else {
-            fatalError("unknown store version at URL \(sourceURL)")
+            fatalError("Unknown store version at URL \(sourceURL)")
         }
         
         forceWALCheckpointingForStore(at: sourceURL)
@@ -59,7 +59,7 @@ class CoreDataMigrator {
             do {
                 try manager.migrateStore(from: currentURL, sourceType: NSSQLiteStoreType, options: nil, with: step.mapping, toDestinationURL: destinationURL, destinationType: NSSQLiteStoreType, destinationOptions: nil)
             } catch let error {
-                fatalError("failed attempting to migrate from \(step.source) to \(step.destination), error: \(error)")
+                fatalError("Failed attempting to migrate from \(step.source) to \(step.destination), error: \(error)")
             }
             
             if currentURL != sourceURL {
@@ -92,7 +92,7 @@ class CoreDataMigrator {
             let store = persistentStoreCoordinator.addPersistentStore(at: storeURL, options: options)
             try persistentStoreCoordinator.remove(store)
         } catch let error {
-            fatalError("failed to force WAL checkpointing, error: \(error)")
+            fatalError("Failed to force WAL checkpointing, error: \(error)")
         }
     }
 }

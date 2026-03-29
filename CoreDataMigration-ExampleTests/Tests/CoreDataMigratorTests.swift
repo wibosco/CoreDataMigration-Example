@@ -31,7 +31,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var migrator: CoreDataMigrator!
+    var sut: CoreDataMigrator!
     
     // MARK: - Setup
     
@@ -42,7 +42,7 @@ class CoreDataMigratorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        migrator = CoreDataMigrator()
+        sut = CoreDataMigrator()
     }
     
     override func tearDown() {
@@ -58,7 +58,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
         
-        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version2))
+        sut.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version2))
         
         let modifiedDateAfterMigration = try! FileManager.default.attributesOfItem(atPath: targetURL.path)[FileAttributeKey.modificationDate] as! Date
         
@@ -72,7 +72,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
         
-        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version3))
+        sut.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version3))
         
         let modifiedDateAfterMigration = try! FileManager.default.attributesOfItem(atPath: targetURL.path)[FileAttributeKey.modificationDate] as! Date
         
@@ -86,7 +86,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
         
-        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version4))
+        sut.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel(version: .version4))
         
         let modifiedDateAfterMigration = try! FileManager.default.attributesOfItem(atPath: targetURL.path)[FileAttributeKey.modificationDate] as! Date
         
@@ -102,7 +102,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let modifiedDateBeforeMigration = try! FileManager.default.attributesOfItem(atPath: sourceURL.path)[FileAttributeKey.modificationDate] as! Date
         
-        migrator.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel.current)
+        sut.migrateStore(from: sourceURL, to: targetURL, targetVersion: CoreDataMigrationModel.current)
         
         let modifiedDateAfterMigration = try! FileManager.default.attributesOfItem(atPath: targetURL.path)[FileAttributeKey.modificationDate] as! Date
         
@@ -115,7 +115,7 @@ class CoreDataMigratorTests: XCTestCase {
     func test_requiresMigration_true() {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_1.sqlite")
         
-        let requiresMigration = migrator.requiresMigration(at: storeURL)
+        let requiresMigration = sut.requiresMigration(at: storeURL)
         
         XCTAssertTrue(requiresMigration)
     }
@@ -124,7 +124,7 @@ class CoreDataMigratorTests: XCTestCase {
         let storeURL = CoreDataMigratorTests.moveFileFromBundleToTmpDirectory(fileName: "CoreDataMigration_Example_3.sqlite")
         let migrationModel = CoreDataMigrationModel(version: .version3)
         
-        let requiresMigration = migrator.requiresMigration(at: storeURL, currentMigrationModel: migrationModel)
+        let requiresMigration = sut.requiresMigration(at: storeURL, currentMigrationModel: migrationModel)
         
         XCTAssertFalse(requiresMigration)
     }
@@ -137,7 +137,7 @@ class CoreDataMigratorTests: XCTestCase {
         
         let sizeBeforeCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
-        migrator.forceWALCheckpointingForStore(at: storeURL)
+        sut.forceWALCheckpointingForStore(at: storeURL)
         
         let sizeAfterCheckPointing = try! FileManager.default.attributesOfItem(atPath: storeURL.path)[FileAttributeKey.size] as! NSNumber
         
