@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class PostsViewController: UITableViewController {
-
     var posts = [Post]()
     
     lazy var dateFormatter: DateFormatter = {

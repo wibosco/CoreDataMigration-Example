@@ -9,7 +9,6 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-
     @IBOutlet weak var postIDLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 

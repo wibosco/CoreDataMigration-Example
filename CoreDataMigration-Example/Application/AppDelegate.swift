@@ -9,10 +9,15 @@
 import UIKit
 import CoreData
 
+@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        guard NSClassFromString("XCTestCase") == nil else {
+            return true
+        }
+        
         CoreDataManager.shared.setup {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // just for example purposes
                 self.presentMainUI()
