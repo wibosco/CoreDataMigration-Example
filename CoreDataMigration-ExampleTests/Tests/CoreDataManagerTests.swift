@@ -12,7 +12,7 @@ import CoreData
 @testable import CoreDataMigration_Example
 
 class CoreDataManagerTests: XCTestCase {    
-    var migrator: CoreDataMigratorMock!
+    var migrator: StubCoreDataMigrator!
     var sut: CoreDataManager!
     
     // MARK: - Setup
@@ -20,7 +20,7 @@ class CoreDataManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        migrator = CoreDataMigratorMock()
+        migrator = StubCoreDataMigrator()
         sut = CoreDataManager(migrator: migrator)
     }
 
@@ -43,7 +43,7 @@ class CoreDataManagerTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 5)
     }
 
     func test_givenNoMigrationRequired_whenSetup_thenChecksIfMigrationRequiredButDoesNotMigrate() {
@@ -66,7 +66,7 @@ class CoreDataManagerTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 5)
     }
     
     func test_givenMigrationRequired_whenSetup_thenMigratesStore() {
@@ -84,6 +84,6 @@ class CoreDataManagerTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 5)
     }
 }

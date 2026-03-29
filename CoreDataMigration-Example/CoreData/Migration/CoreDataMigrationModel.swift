@@ -10,24 +10,10 @@ import Foundation
 import CoreData
 
 class CoreDataMigrationModel {
-    let version: CoreDataVersion
-    
-    var modelBundle: Bundle {
-        return Bundle.main
-    }
-    
-    var modelDirectoryName: String {
-        return "CoreDataMigration_Example.momd"
-    }
+    private let version: CoreDataVersion
     
     static var all: [CoreDataMigrationModel] {
-        var migrationModels = [CoreDataMigrationModel]()
-        
-        for version in CoreDataVersion.allCases {
-            migrationModels.append(CoreDataMigrationModel(version: version))
-        }
-        
-        return migrationModels
+        return CoreDataVersion.allCases.map { CoreDataMigrationModel(version: $0) }
     }
     
     static var current: CoreDataMigrationModel {
@@ -56,8 +42,13 @@ class CoreDataMigrationModel {
     // MARK: - Model
     
     func managedObjectModel() -> NSManagedObjectModel {
-        let omoURL = modelBundle.url(forResource: version.rawValue, withExtension: "omo", subdirectory: modelDirectoryName) // optimized model file
-        let momURL = modelBundle.url(forResource: version.rawValue, withExtension: "mom", subdirectory: modelDirectoryName)
+        let omoURL = Bundle.main.url(forResource: version.rawValue,
+                                     withExtension: "omo",
+                                     subdirectory: "CoreDataMigration_Example.momd") // optimized model file
+        
+        let momURL = Bundle.main.url(forResource: version.rawValue,
+                                     withExtension: "mom",
+                                     subdirectory: "CoreDataMigration_Example.momd")
         
         guard let url = omoURL ?? momURL else {
             fatalError("Unable to find model in bundle")
@@ -83,18 +74,19 @@ class CoreDataMigrationModel {
     func customMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel? {
         let sourceModel = managedObjectModel()
         let destinationModel = nextVersion.managedObjectModel()
-        guard let mapping = NSMappingModel(from: [modelBundle], forSourceModel: sourceModel, destinationModel: destinationModel) else {
-            return nil
-        }
-        
-        return mapping
+
+        return NSMappingModel(from: [Bundle.main],
+                              forSourceModel: sourceModel,
+                              destinationModel: destinationModel)
     }
     
     func inferredMappingModel(to nextVersion: CoreDataMigrationModel) -> NSMappingModel {
         do {
             let sourceModel = managedObjectModel()
             let destinationModel = nextVersion.managedObjectModel()
-            return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
+            
+            return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel,
+                                                           destinationModel: destinationModel)
         } catch {
             fatalError("Unable to generate inferred mapping model")
         }
@@ -114,7 +106,9 @@ class CoreDataMigrationModel {
         let sourceModel = managedObjectModel()
         let destinationModel = nextVersion.managedObjectModel()
         
-        let step = CoreDataMigrationStep(source: sourceModel, destination: destinationModel, mapping: mapping)
+        let step = CoreDataMigrationStep(source: sourceModel,
+                                         destination: destinationModel,
+                                         mapping: mapping)
         let nextStep = nextVersion.migrationSteps(to: version)
         
         return [step] + nextStep
@@ -124,7 +118,8 @@ class CoreDataMigrationModel {
     
     static func migrationModelCompatibleWithStoreMetadata(_ metadata: [String : Any]) -> CoreDataMigrationModel? {
         let compatibleMigrationModel = CoreDataMigrationModel.all.first {
-            $0.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+            $0.managedObjectModel().isConfiguration(withName: nil,
+                                                    compatibleWithStoreMetadata: metadata)
         }
         
         return compatibleMigrationModel

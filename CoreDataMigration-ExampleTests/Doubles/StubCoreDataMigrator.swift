@@ -11,9 +11,9 @@ import CoreData
 
 @testable import CoreDataMigration_Example
 
-class CoreDataMigratorMock: CoreDataMigrator {
+class StubCoreDataMigrator: CoreDataMigrating {
     enum Event {
-        case requiresMigration(URL, CoreDataMigrationModel)
+        case requiresMigration(URL)
         case migrateStore(URL)
     }
     
@@ -21,13 +21,13 @@ class CoreDataMigratorMock: CoreDataMigrator {
     
     var requiresMigrationToBeReturned: Bool!
     
-    override func requiresMigration(at: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
-        events.append(.requiresMigration(at, currentMigrationModel))
+    func requiresMigration(at storeURL: URL) -> Bool {
+        events.append(.requiresMigration(storeURL))
         
         return requiresMigrationToBeReturned
     }
     
-    override func migrateStore(at: URL) {
-        events.append(.migrateStore(at))
+    func migrateStore(at storeURL: URL) {
+        events.append(.migrateStore(storeURL))
     }
 }

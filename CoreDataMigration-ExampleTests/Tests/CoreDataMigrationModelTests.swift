@@ -19,8 +19,9 @@ class CoreDataMigrationModelTests: XCTestCase {
     
     func test_givenLatestVersion_whenAccessingCurrent_thenReturnsLatestVersion() {
         let currentModel = CoreDataMigrationModel.current
+        let expectedModel = CoreDataMigrationModel(version: .version4)
         
-        XCTAssertEqual(currentModel.version, CoreDataVersion.latest)
+        XCTAssertEqual(currentModel.managedObjectModel(), expectedModel.managedObjectModel())
     }
     
     // MARK: - All
@@ -33,29 +34,32 @@ class CoreDataMigrationModelTests: XCTestCase {
     
     func test_givenAllVersionsExist_whenAccessingAll_thenModelsAreInVersionOrder() {
         let allModels = CoreDataMigrationModel.all
-        let allVersions = allModels.map { $0.version }
+        let expectedModels = CoreDataVersion.allCases.map { CoreDataMigrationModel(version: $0).managedObjectModel() }
         
-        XCTAssertEqual(allVersions, CoreDataVersion.allCases)
+        XCTAssertEqual(allModels.map { $0.managedObjectModel() }, expectedModels)
     }
     
     // MARK: - Successor
     
     func test_givenVersion1_whenAccessingSuccessor_thenReturnsVersion2() {
         let sut = CoreDataMigrationModel(version: .version1)
+        let expected = CoreDataMigrationModel(version: .version2)
         
-        XCTAssertEqual(sut.successor?.version, .version2)
+        XCTAssertEqual(sut.successor?.managedObjectModel(), expected.managedObjectModel())
     }
     
     func test_givenVersion2_whenAccessingSuccessor_thenReturnsVersion3() {
         let sut = CoreDataMigrationModel(version: .version2)
+        let expected = CoreDataMigrationModel(version: .version3)
         
-        XCTAssertEqual(sut.successor?.version, .version3)
+        XCTAssertEqual(sut.successor?.managedObjectModel(), expected.managedObjectModel())
     }
     
     func test_givenVersion3_whenAccessingSuccessor_thenReturnsVersion4() {
         let sut = CoreDataMigrationModel(version: .version3)
+        let expected = CoreDataMigrationModel(version: .version4)
         
-        XCTAssertEqual(sut.successor?.version, .version4)
+        XCTAssertEqual(sut.successor?.managedObjectModel(), expected.managedObjectModel())
     }
     
     func test_givenVersion4_whenAccessingSuccessor_thenReturnsNil() {

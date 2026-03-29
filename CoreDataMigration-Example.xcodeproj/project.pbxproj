@@ -38,7 +38,7 @@
 		434FE74B2F795ACA00359208 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7402F795ACA00359208 /* CoreDataManagerTests.swift */; };
 		434FE74C2F795ACA00359208 /* CoreDataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7422F795ACA00359208 /* CoreDataMigratorTests.swift */; };
 		434FE74D2F795ADC00359208 /* TestingAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7372F795ACA00359208 /* TestingAppDelegate.swift */; };
-		434FE7502F795AFD00359208 /* CoreDataMigratorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */; };
+		434FE7502F795AFD00359208 /* StubCoreDataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE74E2F795AFD00359208 /* StubCoreDataMigrator.swift */; };
 		434FE7532F795B5400359208 /* StubCoreDataMigrationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */; };
 		43EC64232F79925F0055607E /* CoreDataVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC64222F79925E0055607E /* CoreDataVersionTests.swift */; };
 /* End PBXBuildFile section */
@@ -89,7 +89,7 @@
 		434FE7402F795ACA00359208 /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
 		434FE7412F795ACA00359208 /* CoreDataMigrationModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationModelTests.swift; sourceTree = "<group>"; };
 		434FE7422F795ACA00359208 /* CoreDataMigratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigratorTests.swift; sourceTree = "<group>"; };
-		434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigratorMock.swift; sourceTree = "<group>"; };
+		434FE74E2F795AFD00359208 /* StubCoreDataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCoreDataMigrator.swift; sourceTree = "<group>"; };
 		434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubCoreDataMigrationModel.swift; sourceTree = "<group>"; };
 		43AB8AE51F66E6A5003153B3 /* CoreDataMigration-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CoreDataMigration-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43AB8AFC1F66E6A5003153B3 /* CoreDataMigration-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataMigration-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -257,7 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				434FE7372F795ACA00359208 /* TestingAppDelegate.swift */,
-				434FE74E2F795AFD00359208 /* CoreDataMigratorMock.swift */,
+				434FE74E2F795AFD00359208 /* StubCoreDataMigrator.swift */,
 				434FE7512F795B5400359208 /* StubCoreDataMigrationModel.swift */,
 			);
 			path = Doubles;
@@ -474,7 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				434FE7492F795ACA00359208 /* CoreDataMigrationModelTests.swift in Sources */,
-				434FE7502F795AFD00359208 /* CoreDataMigratorMock.swift in Sources */,
+				434FE7502F795AFD00359208 /* StubCoreDataMigrator.swift in Sources */,
 				434FE74A2F795ACA00359208 /* TestingAppDelegate.swift in Sources */,
 				434FE74B2F795ACA00359208 /* CoreDataManagerTests.swift in Sources */,
 				434FE7532F795B5400359208 /* StubCoreDataMigrationModel.swift in Sources */,

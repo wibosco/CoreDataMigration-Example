@@ -8,6 +8,11 @@
 
 import CoreData
 
+protocol CoreDataMigrating {
+    func requiresMigration(at storeURL: URL) -> Bool
+    func migrateStore(at storeURL: URL)
+}
+
 /**
  Responsible for handling Core Data model migrations.
  
@@ -24,16 +29,17 @@ import CoreData
  Then when we create model version 5, we only need to create one additional mapping 4 to 5. This greatly reduces the work
  required when adding a new version.
  */
-class CoreDataMigrator {
+class CoreDataMigrator: CoreDataMigrating {
     
     // MARK: - Check
     
-    func requiresMigration(at storeURL: URL, currentMigrationModel: CoreDataMigrationModel = CoreDataMigrationModel.current) -> Bool {
+    func requiresMigration(at storeURL: URL) -> Bool {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
             return false
         }
 
-        return !currentMigrationModel.managedObjectModel().isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+        return !CoreDataMigrationModel.current.managedObjectModel().isConfiguration(withName: nil,
+                                                                                    compatibleWithStoreMetadata: metadata)
     }
     
     // MARK: - Migration
@@ -42,7 +48,9 @@ class CoreDataMigrator {
         migrateStore(from: storeURL, to: storeURL, targetVersion: CoreDataMigrationModel.current)
     }
     
-    func migrateStore(from sourceURL: URL, to targetURL: URL, targetVersion: CoreDataMigrationModel) {
+    private func migrateStore(from sourceURL: URL,
+                              to targetURL: URL,
+                              targetVersion: CoreDataMigrationModel) {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: sourceURL),
               let sourceMigrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata) else {
             fatalError("Unknown store version at URL \(sourceURL)")
@@ -54,11 +62,20 @@ class CoreDataMigrator {
         let migrationSteps = sourceMigrationModel.migrationSteps(to: targetVersion)
         
         for step in migrationSteps {
-            let manager = NSMigrationManager(sourceModel: step.source, destinationModel: step.destination)
-            let destinationURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString)
+            let manager = NSMigrationManager(sourceModel: step.source,
+                                             destinationModel: step.destination)
+            let tmpDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(),
+                                      isDirectory: true)
+            let destinationURL = tmpDirectoryURL.appendingPathComponent(UUID().uuidString)
             
             do {
-                try manager.migrateStore(from: currentURL, sourceType: NSSQLiteStoreType, options: nil, with: step.mapping, toDestinationURL: destinationURL, destinationType: NSSQLiteStoreType, destinationOptions: nil)
+                try manager.migrateStore(from: currentURL,
+                                         sourceType: NSSQLiteStoreType,
+                                         options: nil,
+                                         with: step.mapping,
+                                         toDestinationURL: destinationURL,
+                                         destinationType: NSSQLiteStoreType,
+                                         destinationOptions: nil)
             } catch let error {
                 fatalError("Failed attempting to migrate from \(step.source) to \(step.destination), error: \(error)")
             }
@@ -71,7 +88,8 @@ class CoreDataMigrator {
             currentURL = destinationURL
         }
         
-        NSPersistentStoreCoordinator.replaceStore(at: targetURL, withStoreAt: currentURL)
+        NSPersistentStoreCoordinator.replaceStore(at: targetURL,
+                                                  withStoreAt: currentURL)
         
         if (currentURL != sourceURL) {
             NSPersistentStoreCoordinator.destroyStore(at: currentURL)
@@ -80,8 +98,9 @@ class CoreDataMigrator {
     
     // MARK: - WAL
 
-    func forceWALCheckpointingForStore(at storeURL: URL) {
-        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL), let migrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata)  else {
+    private func forceWALCheckpointingForStore(at storeURL: URL) {
+        guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL),
+                let migrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata)  else {
             return
         }
         
@@ -90,7 +109,8 @@ class CoreDataMigrator {
             let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
             
             let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
-            let store = persistentStoreCoordinator.addPersistentStore(at: storeURL, options: options)
+            let store = persistentStoreCoordinator.addPersistentStore(at: storeURL,
+                                                                      options: options)
             try persistentStoreCoordinator.remove(store)
         } catch let error {
             fatalError("Failed to force WAL checkpointing, error: \(error)")

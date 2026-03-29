@@ -11,9 +11,9 @@ import CoreData
 
 class CoreDataManager {
     
-    let migrator: CoreDataMigrator
+    let migrator: CoreDataMigrating
     
-    lazy var persistentContainer: NSPersistentContainer! = {
+    lazy var persistentContainer: NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "CoreDataMigration_Example")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.shouldInferMappingModelAutomatically = false //inferred mapping will be handled else where
@@ -41,23 +41,21 @@ class CoreDataManager {
     
     // MARK: - Init
     
-    init(migrator: CoreDataMigrator = CoreDataMigrator()) {
+    init(migrator: CoreDataMigrating = CoreDataMigrator()) {
         self.migrator = migrator
     }
     
     // MARK: - SetUp
     
     func setup(completion: @escaping () -> Void) {
-        loadPersistentStore {
-            completion()
-        }
+        loadPersistentStore(completion: completion)
     }
     
     // MARK: - Loading
     
     private func loadPersistentStore(completion: @escaping () -> Void) {
         migrateStoreIfNeeded {
-            self.persistentContainer.loadPersistentStores { description, error in
+            self.persistentContainer.loadPersistentStores { _, error in
                 guard error == nil else {
                     fatalError("Unable to load store \(error!)")
                 }
