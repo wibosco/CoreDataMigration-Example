@@ -90,7 +90,6 @@
 		43AB8AFC1F66E6A5003153B3 /* CoreDataMigration-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataMigration-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43AB8B021F66E6A5003153B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43EC64222F79925E0055607E /* CoreDataVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVersionTests.swift; sourceTree = "<group>"; };
-		43FBB4421F6C16FB0090C536 /* CoreDataMigration-ExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreDataMigration-ExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,7 +323,6 @@
 				434FE7382F795ACA00359208 /* Doubles */,
 				434FE73F2F795ACA00359208 /* Resources */,
 				434FE7432F795ACA00359208 /* Tests */,
-				43FBB4421F6C16FB0090C536 /* CoreDataMigration-ExampleTests-Bridging-Header.h */,
 				43AB8B021F66E6A5003153B3 /* Info.plist */,
 			);
 			path = "CoreDataMigration-ExampleTests";

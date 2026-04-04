@@ -37,7 +37,7 @@ class CoreDataMigrator: CoreDataMigrating {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL) else {
             return false
         }
-
+        
         return !CoreDataMigrationModel.current.managedObjectModel().isConfiguration(withName: nil,
                                                                                     compatibleWithStoreMetadata: metadata)
     }
@@ -55,9 +55,9 @@ class CoreDataMigrator: CoreDataMigrating {
               let sourceMigrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata) else {
             fatalError("Unknown store version at URL \(sourceURL)")
         }
-
+        
         forceWALCheckpointingForStore(at: sourceURL)
-
+        
         var currentURL = sourceURL
         let migrationSteps = sourceMigrationModel.migrationSteps(to: targetVersion)
         
@@ -97,10 +97,10 @@ class CoreDataMigrator: CoreDataMigrating {
     }
     
     // MARK: - WAL
-
+    
     private func forceWALCheckpointingForStore(at storeURL: URL) {
         guard let metadata = NSPersistentStoreCoordinator.metadata(at: storeURL),
-                let migrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata)  else {
+              let migrationModel = CoreDataMigrationModel.migrationModelCompatibleWithStoreMetadata(metadata)  else {
             return
         }
         
