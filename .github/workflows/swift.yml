@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: List available Xcode versions
       run: ls /Applications | grep Xcode
     - name: Show current version of Xcode
